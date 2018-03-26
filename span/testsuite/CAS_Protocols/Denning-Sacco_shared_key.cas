@@ -1,0 +1,21 @@
+protocol DenningSaccoSharedKey;
+identifiers
+A, B, S 	: user;
+Kas, Kbs, Kab 	: symmetric_key;
+T 		: number;
+
+messages
+1. A -> S 	: A, B
+2. S -> A 	: {B, Kab, T, {Kab, A, T}Kbs}Kas
+3. A -> B 	: {Kab,A, T}Kbs
+
+knowledge
+A	: A,B,S;
+B	: A,B,S;
+S	: A,B,S;
+
+session_instances
+ [A:alice,B:bob,S:server,Kas:key1,Kbs:key2];
+
+goal
+ secrecy_of Kab [];

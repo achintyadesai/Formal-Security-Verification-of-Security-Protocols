@@ -1,0 +1,28 @@
+protocol CB;
+
+identifiers
+A, C, T : user;
+Data,Msg,Code,Ok: number;
+Kb 	: public_key;
+H	: function;
+
+messages
+1. C -> T 	: Data,{H(Data)}Kb'
+2. T ~> A 	: Msg
+3. A => T 	: Code
+4. T => C 	: Ok
+
+knowledge
+A	: A,C,T;
+C	: A,C,T,Data;
+T	: A,C,T,Kb;
+
+session_instances
+ [A:alice,C:card,T:terminal,Data:data,Msg:msg,Code:code,Ok:ok,Kb:kb,H:h];
+
+intruder_knowledge
+ alice,card,terminal,data,msg,ok,kb,h;% ,{h(data)}kb';
+
+goal
+ T authenticates A on Ok;
+ T authenticates C on Ok;

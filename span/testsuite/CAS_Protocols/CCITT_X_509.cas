@@ -1,0 +1,22 @@
+protocol CCITTX509;
+identifiers
+A, B 		: user;
+Na		: number;
+Ta		: number;
+Wa		: number;
+Xa		: number;
+PKa		: public_key;
+PKb		: public_key;
+
+messages
+1. A -> B 	: A, {Ta, Na, B, Xa, {Wa}PKb}PKa'
+
+knowledge
+A	: A,B,PKa,PKb,Xa;
+B	: A,B,PKa,PKb;
+
+session_instances
+ [A:alice,B:bob,Xa:data,PKa:pk1,PKb:pk2];
+
+goal
+ secrecy_of Wa [];

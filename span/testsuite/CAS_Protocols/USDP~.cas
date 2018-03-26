@@ -1,0 +1,26 @@
+protocol NeedhamSchroederPublicKey;
+identifiers
+A,B,S 		: user;
+Na,Nb 		: number;
+KPa,KPb,KPs 	: public_key;
+
+messages
+1. A -> S 	: A,B
+2. S -> A 	: {KPb, B}KPs'
+3. A -> B 	: {Na, A}KPb
+4. B -> S 	: B,A
+5. S -> B 	: {KPa, A}KPs'
+6. B -> A 	: {Na, Nb}KPa
+7. A -> B 	: {Nb}KPb
+
+knowledge
+A	: A,B,S,KPa,KPb,KPs;
+B	: A,B,S,KPa,KPb,KPs;
+S	: A,B,S,KPa,KPb,KPs;
+
+session_instances
+ [A:alice,B:bob,S:serveur,KPa:pk1,KPb:pk2,KPs:pk3];
+
+goal
+ A authenticates B on Na;
+

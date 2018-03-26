@@ -1,0 +1,22 @@
+protocol BANModifiedAndrewSecureRPC;
+identifiers
+A, B 		: user;
+Kab, Kab2	: symmetric_key;
+Na, Nb, Nb2 	: number;
+Incr		: function;
+
+messages
+1. A -> B 	: A, {Na}Kab
+2. B -> A 	: {Incr(Na), Nb}Kab
+3. A -> B 	: {Incr(Nb)}Kab
+4. B -> A 	: {Kab2, Nb2, Na}Kab
+
+knowledge
+A	: A,B,Kab,Incr;
+B	: A,B,Kab,Incr;
+
+session_instances
+ [A:alice,B:bob,Kab:key,Incr:incr];
+
+goal
+ secrecy_of Kab2 [];

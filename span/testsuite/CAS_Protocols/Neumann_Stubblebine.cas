@@ -1,0 +1,26 @@
+protocol NeumannStubblebine;
+identifiers
+A, B, S 	: user;
+Na, Ma, Nb, Mb 	: number;
+Kas, Kbs, Kab 	: symmetric_key;
+Ta, Tb 		: number;
+
+messages
+1. A -> B 	: A, Na
+2. B -> S 	: B, {A, Na, Tb}Kbs, Nb
+3. S -> A 	: {B, Na, Kab, Tb}Kas, {A, Kab, Tb}Kbs, Nb
+4. A -> B 	: {A, Kab, Tb}Kbs, {Nb}Kab
+5. A -> B 	: Ma, {A, Kab, Tb}Kbs
+6. B -> A 	: Mb, {Ma}Kab
+7. A -> B 	: {Mb}Kab
+
+knowledge
+A	: A,B,S,Kas;
+B	: A,B,S,Kbs;
+S	: A,B,S,Kas,Kbs;
+
+session_instances
+ [A:alice,B:bob,S:server,Kas:key1,Kbs:key2];
+
+goal
+ secrecy_of Kab [];

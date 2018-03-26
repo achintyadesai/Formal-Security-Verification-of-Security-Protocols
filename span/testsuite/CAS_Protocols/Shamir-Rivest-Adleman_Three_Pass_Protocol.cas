@@ -1,0 +1,20 @@
+protocol RSAThreePassProtocol;
+identifiers
+A, B 	: user;
+Ka, Kb 	: symmetric_key;
+M 	:  number;
+
+messages
+1. A -> B 	: {M}Ka
+2. B -> A 	: {{M}Ka}Kb
+3. A -> B 	: {M}Kb
+
+knowledge
+A : A,B,Ka;
+B : A,B,Kb;
+
+session_instances
+ [A:alice,B:bob,Ka:key1,Kb:key2];
+
+goal
+ A authenticates B on M;

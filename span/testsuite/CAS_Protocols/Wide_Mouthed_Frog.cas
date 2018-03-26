@@ -1,0 +1,20 @@
+protocol WideMouthedFrog;
+identifiers
+A,B,S 		: user;
+Kas, Kbs, Kab 	: symmetric_key;
+Ta, Ts 		: number;
+
+messages
+1. A -> S 	: A, {Ta, B, Kab}Kas
+2. S -> B 	: {Ts, A, Kab}Kbs
+
+knowledge
+A	: A,B,S,Kas;
+B	: A,B,S,Kbs;
+S	: A,B,S,Kas,Kbs;
+
+session_instances
+ [A:alice,B:bob,S:server,Kas:key1,Kbs:key2];
+
+goal
+ secrecy_of Kab [];

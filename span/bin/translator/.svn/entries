@@ -1,0 +1,70 @@
+8
+
+dir
+510
+svn+ssh://genet@scm.gforge.inria.fr/svn/protocoleverif/trunk/Distributions_Avispa/Avispa_linux/span/bin/translator
+svn+ssh://genet@scm.gforge.inria.fr/svn/protocoleverif
+
+
+
+2009-03-11T15:47:41.709508Z
+510
+genet
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+9b1c0df7-bf63-0410-a4f0-dc794b206567
+
+hlpsl2if-ok-exp-mais-bug-TA4SP
+file
+
+
+
+
+2009-03-11T13:28:37.000000Z
+dc270dd7ca6b7be5ab47a0c793db28a2
+2008-09-24T13:44:49.000000Z
+468
+genet
+has-props
+
+.DS_Store
+file
+
+
+
+
+2009-03-11T13:28:37.000000Z
+a94e493992d950701609b096ab869f09
+2007-03-02T08:32:27.000000Z
+144
+genet
+has-props
+
+hlpsl2if
+file
+
+
+
+
+2009-03-11T13:28:37.000000Z
+465dc21eb813e6acb58589a97c874eee
+2008-09-24T13:44:49.000000Z
+468
+genet
+has-props
+
+CVS
+dir
+

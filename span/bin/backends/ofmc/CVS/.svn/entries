@@ -1,0 +1,64 @@
+8
+
+dir
+510
+svn+ssh://genet@scm.gforge.inria.fr/svn/protocoleverif/trunk/Distributions_Avispa/Avispa_linux/span/bin/backends/ofmc/CVS
+svn+ssh://genet@scm.gforge.inria.fr/svn/protocoleverif
+
+
+
+2009-03-11T15:47:41.709508Z
+510
+genet
+
+
+svn:special svn:externals svn:needs-lock
+
+Repository
+file
+
+
+
+
+2009-03-11T13:28:35.000000Z
+824aefde7749dc662f0ef08859019493
+2009-03-11T15:47:41.709508Z
+510
+genet
+
+Root
+file
+
+
+
+
+2009-03-11T13:28:35.000000Z
+0e831e95fae2105fc316ecac92d29675
+2009-03-11T15:47:41.709508Z
+510
+genet
+
+Entries
+file
+
+
+
+
+2009-03-11T13:28:35.000000Z
+86a36fb880c52e0b11986bccf2f8335d
+2009-03-11T15:47:41.709508Z
+510
+genet
+
+Template
+file
+
+
+
+
+2009-03-11T13:28:35.000000Z
+d41d8cd98f00b204e9800998ecf8427e
+2009-03-11T15:47:41.709508Z
+510
+genet
+

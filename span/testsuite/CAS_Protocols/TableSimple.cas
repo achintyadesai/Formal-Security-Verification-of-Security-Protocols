@@ -1,0 +1,16 @@
+protocol TableSimple;
+identifiers
+A,B	: user;
+Tab	: table;
+Na,Nb	: number;
+messages
+1. A -> B	: {Na}Tab[B]
+2. B -> A	: {Na,Nb}Tab[A]
+3. A -> B	: {Nb}Tab[B]
+knowledge
+A : A,B,Tab;
+B : A,B,Tab;
+session_instances
+[A:alice,B:bob,Tab:tab];
+goal
+	A authenticates B on Na;

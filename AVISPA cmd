@@ -1,0 +1,22 @@
+Steps for linux
+1.Download span zip from internet
+2.extract the folder
+3.Run the following commands on the terminal from the location containing this folder
+  (copy your path to span)
+export SPAN=/home/Achintya/Desktop/span
+export AVISPA_PACKAGE=/home/Achintya/Desktop/span
+
+4.run ./span from span folder itself on the terminal
+if error of shared libraries occurs then run the below command
+	sudo apt-get install tcl8.5 tk8.5
+
+and then try again
+./span
+
+
+***You will have to run the above commands on the terminal everytime system is booted, so keep the span folder in a convinient location***
+
+**useful links to understand avispa
+
+https://www.youtube.com/watch?v=YvgHw5pr5bA
+sample research paper is attached just for reference

@@ -1,0 +1,208 @@
+% SATE OUTPUT
+
+% SORTS
+sort(action).
+sort(fresh_const).
+sort(fresh_public_key_typed).
+sort(fresh_public_key).
+sort(fresh_nonce_typed).
+sort(fresh_nonce).
+sort(agent).
+sort(agent_typed).
+sort(nonce).
+sort(nonce_typed).
+sort(symmetric_key).
+sort(sk_typed).
+sort(public_key).
+sort(pk_typed).
+sort(message).
+sort(nat).
+sort(protocol_id).
+sort(protocol_id_typed).
+sort(set).
+sort(fluent).
+
+% CONSTANTS
+constant(initial_state(initial_state_id),fluent).
+constant(fpk(fresh_public_key_id,agent,nat),fresh_public_key_typed).
+constant(pk(fresh_public_key_typed),fresh_public_key).
+constant(fsk(fresh_symmetric_key_id,agent,nat),fresh_symmetric_key_typed).
+constant(sk(fresh_symmetric_key_typed),fresh_symmetric_key).
+constant(fn(fresh_nonce_id,agent,nat),fresh_nonce_typed).
+constant(nonce(fresh_nonce_typed),fresh_nonce).
+constant(fresh(fresh_const),fluent).
+constant(sec_k2,protocol_id_typed).
+constant(nb,protocol_id_typed).
+constant(na,protocol_id_typed).
+constant(sec_k1,protocol_id_typed).
+constant(dummy_nonce,nonce_typed).
+constant(dummy_pk,pk_typed).
+constant(set_75,set).
+constant(set_73,set).
+constant(set_69,set).
+constant(set_58,set).
+constant(kab,sk_typed).
+constant(7,nat).
+constant(6,nat).
+constant(3,nat).
+constant(4,nat).
+constant(2,nat).
+constant(1,nat).
+constant(0,nat).
+constant(a,agent_typed).
+constant(b,agent_typed).
+constant(i,agent_typed).
+constant(start,message).
+constant(mr(agent_typed),agent).
+constant(nonce(nonce_typed),nonce).
+constant(sk(sk_typed),symmetric_key).
+constant(pk(pk_typed),public_key).
+constant(fu(function_typed),function).
+constant(pid(protocol_id_typed),protocol_id).
+constant(pair(message,message),message).
+constant(crypt(message,message),message).
+constant(scrypt(message,message),message).
+constant(iknows(message),fluent).
+constant(contains(message,set),fluent).
+constant(witness(agent,agent,protocol_id,message),fluent).
+constant(request(agent,agent,protocol_id,message,nat),fluent).
+constant(secret(message,protocol_id,set),fluent).
+constant(state_eke_Resp(agent,agent,symmetric_key,nat,nonce,nonce,nonce,public_key,set,nat),fluent).
+constant(state_eke_Init(agent,agent,symmetric_key,nat,public_key,nonce,nonce,nonce,set,nat),fluent).
+constant(init1,initial_state_id).
+constant(ea,fresh_public_key_id).
+constant(na0,fresh_nonce_id).
+constant(k,fresh_nonce_id).
+constant(nb0,fresh_nonce_id).
+
+% SUPERSORTS
+super_sort(pk_typed,fresh_public_key_typed).
+super_sort(fresh_const,fresh_public_key).
+super_sort(sk_typed,fresh_symmetric_key_typed).
+super_sort(fresh_const,fresh_symmetric_key).
+super_sort(nonce_typed,fresh_nonce_typed).
+super_sort(fresh_const,fresh_nonce).
+super_sort(message,agent).
+super_sort(message,nonce).
+super_sort(message,symmetric_key).
+super_sort(message,public_key).
+super_sort(message,function).
+super_sort(message,nat).
+super_sort(message,protocol_id).
+super_sort(message,bool).
+
+% INITIAL STATES
+facts([initial_state(init1),
+	 iknows(start),
+	 iknows(mr(a)),
+	 iknows(mr(b)),
+	 iknows(mr(i)),
+	 state_eke_Init(mr(a),mr(b),sk(kab),0,pk(dummy_pk),nonce(dummy_nonce),nonce(dummy_nonce),nonce(dummy_nonce),set_58,3),
+	 state_eke_Resp(mr(b),mr(a),sk(kab),0,nonce(dummy_nonce),nonce(dummy_nonce),nonce(dummy_nonce),pk(dummy_pk),set_69,4),
+	 state_eke_Init(mr(b),mr(a),sk(kab),0,pk(dummy_pk),nonce(dummy_nonce),nonce(dummy_nonce),nonce(dummy_nonce),set_73,6),
+	 state_eke_Resp(mr(a),mr(b),sk(kab),0,nonce(dummy_nonce),nonce(dummy_nonce),nonce(dummy_nonce),pk(dummy_pk),set_75,7),
+	 fresh(pk(fpk(ea,mr(a),3))),
+	 fresh(pk(fpk(ea,mr(b),6))),
+	 fresh(nonce(fn(na0,mr(a),3))),
+	 fresh(nonce(fn(na0,mr(b),6))),
+	 fresh(nonce(fn(k,mr(b),4))),
+	 fresh(nonce(fn(k,mr(a),7))),
+	 fresh(nonce(fn(nb0,mr(b),4))),
+	 fresh(nonce(fn(nb0,mr(a),7)))]).
+
+
+% RULES
+constant(step_0(agent_typed,agent_typed,sk_typed,pk_typed,nonce_typed,nonce_typed,nonce_typed,set,nat),action).
+action(step_0(A,B,Kab,Dummy_Ea,Na,Nb,K,Set_19,SID),
+	true,
+	[state_eke_Init(mr(A),mr(B),sk(Kab),0,pk(Dummy_Ea),nonce(Na),nonce(Nb),nonce(K),Set_19,SID),
+	 iknows(start),
+	 fresh(pk(fpk(ea,mr(A),SID)))],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),1,pk(fpk(ea,mr(A),SID)),nonce(Na),nonce(Nb),nonce(K),Set_19,SID),
+	 iknows(scrypt(sk(Kab),pk(fpk(ea,mr(A),SID))))],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),0,pk(Dummy_Ea),nonce(Na),nonce(Nb),nonce(K),Set_19,SID),
+	 fresh(pk(fpk(ea,mr(A),SID)))]).
+
+constant(step_1(agent_typed,agent_typed,sk_typed,pk_typed,nonce_typed,nonce_typed,nonce_typed,set,nat,nonce_typed),action).
+action(step_1(A,B,Kab,Ea,Dummy_Na,Nb,Dummy_K,Dummy_Set_19,SID,K),
+	true,
+	[state_eke_Init(mr(A),mr(B),sk(Kab),1,pk(Ea),nonce(Dummy_Na),nonce(Nb),nonce(Dummy_K),Dummy_Set_19,SID),
+	 iknows(scrypt(sk(Kab),crypt(pk(Ea),nonce(K)))),
+	 fresh(nonce(fn(na0,mr(A),SID)))],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),2,pk(Ea),nonce(fn(na0,mr(A),SID)),nonce(Nb),nonce(K),Dummy_Set_19,SID),
+	 iknows(scrypt(nonce(K),nonce(fn(na0,mr(A),SID)))),
+	 secret(nonce(K),pid(sec_k1),Dummy_Set_19),
+	 witness(mr(A),mr(B),pid(na),nonce(fn(na0,mr(A),SID))),
+	 contains(mr(A),Dummy_Set_19),
+	 contains(mr(B),Dummy_Set_19)],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),1,pk(Ea),nonce(Dummy_Na),nonce(Nb),nonce(Dummy_K),Dummy_Set_19,SID),
+	 fresh(nonce(fn(na0,mr(A),SID)))]).
+
+constant(step_2(agent_typed,agent_typed,sk_typed,pk_typed,nonce_typed,nonce_typed,nonce_typed,set,nat,nonce_typed),action).
+action(step_2(A,B,Kab,Ea,Na,Dummy_Nb,K,Set_19,SID,Nb),
+	true,
+	[state_eke_Init(mr(A),mr(B),sk(Kab),2,pk(Ea),nonce(Na),nonce(Dummy_Nb),nonce(K),Set_19,SID),
+	 iknows(scrypt(nonce(K),pair(nonce(Na),nonce(Nb))))],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),3,pk(Ea),nonce(Na),nonce(Nb),nonce(K),Set_19,SID),
+	 iknows(scrypt(nonce(K),nonce(Nb))),
+	 request(mr(A),mr(B),pid(nb),nonce(Nb),SID)],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),2,pk(Ea),nonce(Na),nonce(Dummy_Nb),nonce(K),Set_19,SID)]).
+
+constant(step_3(agent_typed,agent_typed,sk_typed,nonce_typed,nonce_typed,nonce_typed,pk_typed,set,nat,pk_typed),action).
+action(step_3(B,A,Kab,Na,Nb,Dummy_K,Dummy_Ea,Dummy_Set_37,SID,Ea),
+	true,
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),0,nonce(Na),nonce(Nb),nonce(Dummy_K),pk(Dummy_Ea),Dummy_Set_37,SID),
+	 iknows(scrypt(sk(Kab),pk(Ea))),
+	 fresh(nonce(fn(k,mr(B),SID)))],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),1,nonce(Na),nonce(Nb),nonce(fn(k,mr(B),SID)),pk(Ea),Dummy_Set_37,SID),
+	 iknows(scrypt(sk(Kab),crypt(pk(Ea),nonce(fn(k,mr(B),SID))))),
+	 secret(nonce(fn(k,mr(B),SID)),pid(sec_k2),Dummy_Set_37),
+	 contains(mr(A),Dummy_Set_37),
+	 contains(mr(B),Dummy_Set_37)],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),0,nonce(Na),nonce(Nb),nonce(Dummy_K),pk(Dummy_Ea),Dummy_Set_37,SID),
+	 fresh(nonce(fn(k,mr(B),SID)))]).
+
+constant(step_4(agent_typed,agent_typed,sk_typed,nonce_typed,nonce_typed,nonce_typed,pk_typed,set,nat,nonce_typed),action).
+action(step_4(B,A,Kab,Dummy_Na,Dummy_Nb,K,Ea,Set_37,SID,Na),
+	true,
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),1,nonce(Dummy_Na),nonce(Dummy_Nb),nonce(K),pk(Ea),Set_37,SID),
+	 iknows(scrypt(nonce(K),nonce(Na))),
+	 fresh(nonce(fn(nb0,mr(B),SID)))],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),2,nonce(Na),nonce(fn(nb0,mr(B),SID)),nonce(K),pk(Ea),Set_37,SID),
+	 iknows(scrypt(nonce(K),pair(nonce(Na),nonce(fn(nb0,mr(B),SID))))),
+	 witness(mr(B),mr(A),pid(nb),nonce(fn(nb0,mr(B),SID)))],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),1,nonce(Dummy_Na),nonce(Dummy_Nb),nonce(K),pk(Ea),Set_37,SID),
+	 fresh(nonce(fn(nb0,mr(B),SID)))]).
+
+constant(step_5(agent_typed,agent_typed,sk_typed,nonce_typed,nonce_typed,nonce_typed,pk_typed,set,nat),action).
+action(step_5(B,A,Kab,Na,Nb,K,Ea,Set_37,SID),
+	true,
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),2,nonce(Na),nonce(Nb),nonce(K),pk(Ea),Set_37,SID),
+	 iknows(scrypt(nonce(K),nonce(Nb)))],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),3,nonce(Na),nonce(Nb),nonce(K),pk(Ea),Set_37,SID),
+	 request(mr(B),mr(A),pid(na),nonce(Na),SID)],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),2,nonce(Na),nonce(Nb),nonce(K),pk(Ea),Set_37,SID)]).
+
+
+% GOALS
+goal(never_reached,true,
+	[never_reached_fluent_keyword]).
+
+
+% EQUATIONS
+
+% USER_AXIOMS
+
+
+% INVOKED DURING THE LOADING (USEFUL FOR SETTING)
+init_sate :-
+	set(verification_abstraction,off),
+	set(if2sate_version,2).
+
+
+% PREDICATE TO EVALUATE ON_THE_FLY_CONDITIONS
+on_the_fly_conditions([]).
+on_the_fly_conditions([C|Cs]) :-
+	ground(C),
+	call(C),
+	on_the_fly_conditions(Cs).

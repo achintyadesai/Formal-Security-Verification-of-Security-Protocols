@@ -1,0 +1,254 @@
+% SATE OUTPUT
+
+% SORTS
+sort(action).
+sort(fresh_const).
+sort(fresh_nonce_typed).
+sort(fresh_nonce).
+sort(agent).
+sort(agent_typed).
+sort(nonce).
+sort(nonce_typed).
+sort(public_key).
+sort(pk_typed).
+sort(message).
+sort(nat).
+sort(protocol_id).
+sort(protocol_id_typed).
+sort(fluent).
+
+% CONSTANTS
+constant(initial_state(initial_state_id),fluent).
+constant(fpk(fresh_public_key_id,agent,nat),fresh_public_key_typed).
+constant(pk(fresh_public_key_typed),fresh_public_key).
+constant(fsk(fresh_symmetric_key_id,agent,nat),fresh_symmetric_key_typed).
+constant(sk(fresh_symmetric_key_typed),fresh_symmetric_key).
+constant(fn(fresh_nonce_id,agent,nat),fresh_nonce_typed).
+constant(nonce(fresh_nonce_typed),fresh_nonce).
+constant(fresh(fresh_const),fluent).
+constant(na,protocol_id_typed).
+constant(start,message).
+constant(pka,pk_typed).
+constant(pks,pk_typed).
+constant(dummy_pk,pk_typed).
+constant(a,agent_typed).
+constant(b,agent_typed).
+constant(i,agent_typed).
+constant(dummy_nonce,nonce_typed).
+constant(ctext,nonce_typed).
+constant(3,nat).
+constant(1,nat).
+constant(0,nat).
+constant(7,nat).
+constant(6,nat).
+constant(4,nat).
+constant(mr(agent_typed),agent).
+constant(nonce(nonce_typed),nonce).
+constant(sk(sk_typed),symmetric_key).
+constant(pk(pk_typed),public_key).
+constant(fu(function_typed),function).
+constant(pid(protocol_id_typed),protocol_id).
+constant(pair(message,message),message).
+constant(crypt(message,message),message).
+constant(inv(message),message).
+constant(iknows(message),fluent).
+constant(witness(agent,agent,protocol_id,message),fluent).
+constant(request(agent,agent,protocol_id,message,nat),fluent).
+constant(state_iso1_Resp(agent,agent,public_key,nat,public_key,nonce,nonce,nat),fluent).
+constant(state_iso1_Init(agent,agent,public_key,public_key,nat,nonce,nat),fluent).
+constant(init1,initial_state_id).
+constant(na0,fresh_nonce_id).
+
+% SUPERSORTS
+super_sort(pk_typed,fresh_public_key_typed).
+super_sort(fresh_const,fresh_public_key).
+super_sort(sk_typed,fresh_symmetric_key_typed).
+super_sort(fresh_const,fresh_symmetric_key).
+super_sort(nonce_typed,fresh_nonce_typed).
+super_sort(fresh_const,fresh_nonce).
+super_sort(message,agent).
+super_sort(message,nonce).
+super_sort(message,symmetric_key).
+super_sort(message,public_key).
+super_sort(message,function).
+super_sort(message,nat).
+super_sort(message,protocol_id).
+super_sort(message,bool).
+
+% INITIAL STATES
+facts([initial_state(init1),
+	 iknows(start),
+	 iknows(mr(a)),
+	 iknows(mr(b)),
+	 iknows(pk(pks)),
+	 iknows(pk(pka)),
+	 iknows(mr(i)),
+	 state_iso1_Init(mr(a),mr(b),pk(pka),pk(pks),0,nonce(dummy_nonce),3),
+	 state_iso1_Resp(mr(b),mr(a),pk(pks),0,pk(dummy_pk),nonce(dummy_nonce),nonce(dummy_nonce),4),
+	 state_iso1_Init(mr(a),mr(b),pk(pka),pk(pks),0,nonce(dummy_nonce),6),
+	 state_iso1_Resp(mr(b),mr(a),pk(pks),0,pk(dummy_pk),nonce(dummy_nonce),nonce(dummy_nonce),7),
+	 fresh(nonce(fn(na0,mr(a),3))),
+	 fresh(nonce(fn(na0,mr(a),6)))]).
+
+
+% RULES
+constant(step_0(agent_typed,agent_typed,pk_typed,pk_typed,nonce_typed,nat),action).
+action(step_0(A,B,Pka,Pks,Dummy_Na,SID),
+	true,
+	[state_iso1_Init(mr(A),mr(B),pk(Pka),pk(Pks),0,nonce(Dummy_Na),SID),
+	 iknows(start),
+	 fresh(nonce(fn(na0,mr(A),SID)))],
+	[state_iso1_Init(mr(A),mr(B),pk(Pka),pk(Pks),1,nonce(fn(na0,mr(A),SID)),SID),
+	 iknows(pair(pk(Pka),pair(mr(A),pair(crypt(inv(pk(Pks)),pair(pk(Pka),mr(A))),pair(nonce(fn(na0,mr(A),SID)),pair(mr(B),pair(nonce(ctext),crypt(inv(pk(Pka)),pair(nonce(fn(na0,mr(A),SID)),pair(mr(B),nonce(ctext))))))))))),
+	 witness(mr(A),mr(B),pid(na),nonce(fn(na0,mr(A),SID)))],
+	[state_iso1_Init(mr(A),mr(B),pk(Pka),pk(Pks),0,nonce(Dummy_Na),SID),
+	 fresh(nonce(fn(na0,mr(A),SID)))]).
+
+constant(decompose_1(agent_typed,agent_typed,pk_typed,pk_typed,nat),action).
+action(decompose_1(A,B,Pka,Pks,SID),
+	true,
+	[iknows(pair(pk(Pka),pair(mr(A),pair(crypt(inv(pk(Pks)),pair(pk(Pka),mr(A))),pair(nonce(fn(na0,mr(A),SID)),pair(mr(B),pair(nonce(ctext),crypt(inv(pk(Pka)),pair(nonce(fn(na0,mr(A),SID)),pair(mr(B),nonce(ctext)))))))))))],
+	[iknows(pk(Pka)),
+	 iknows(mr(A)),
+	 iknows(crypt(inv(pk(Pks)),pair(pk(Pka),mr(A)))),
+	 iknows(nonce(fn(na0,mr(A),SID))),
+	 iknows(mr(B)),
+	 iknows(nonce(ctext)),
+	 iknows(crypt(inv(pk(Pka)),pair(nonce(fn(na0,mr(A),SID)),pair(mr(B),nonce(ctext)))))],
+	[]).
+
+constant(decrypt_private_key_1(agent_typed,pk_typed,pk_typed),action).
+action(decrypt_private_key_1(A,Pka,Pks),
+	true,
+	[iknows(crypt(inv(pk(Pks)),pair(pk(Pka),mr(A)))),
+	 iknows(pk(Pks))],
+	[iknows(pk(Pka)),
+	 iknows(mr(A))],
+	[]).
+
+constant(decrypt_private_key_2(agent_typed,agent_typed,pk_typed,nat),action).
+action(decrypt_private_key_2(A,B,Pka,SID),
+	true,
+	[iknows(crypt(inv(pk(Pka)),pair(nonce(fn(na0,mr(A),SID)),pair(mr(B),nonce(ctext))))),
+	 iknows(pk(Pka))],
+	[iknows(nonce(fn(na0,mr(A),SID))),
+	 iknows(mr(B)),
+	 iknows(nonce(ctext))],
+	[]).
+
+constant(step_1(agent_typed,agent_typed,pk_typed,pk_typed,nonce_typed,nonce_typed,nat,pk_typed,nonce_typed,nonce_typed),action).
+action(step_1(B,A,Pks,Dummy_Pka,Dummy_Na,Dummy_Text,SID,Pka,Na,Text),
+	true,
+	[state_iso1_Resp(mr(B),mr(A),pk(Pks),0,pk(Dummy_Pka),nonce(Dummy_Na),nonce(Dummy_Text),SID),
+	 iknows(pair(pk(Pka),pair(mr(A),pair(crypt(inv(pk(Pks)),pair(pk(Pka),mr(A))),pair(nonce(Na),pair(mr(B),pair(nonce(Text),crypt(inv(pk(Pka)),pair(nonce(Na),pair(mr(B),nonce(Text)))))))))))],
+	[state_iso1_Resp(mr(B),mr(A),pk(Pks),1,pk(Pka),nonce(Na),nonce(Text),SID),
+	 request(mr(B),mr(A),pid(na),nonce(Na),SID)],
+	[state_iso1_Resp(mr(B),mr(A),pk(Pks),0,pk(Dummy_Pka),nonce(Dummy_Na),nonce(Dummy_Text),SID)]).
+
+constant(decompose_2(agent_typed,agent_typed,pk_typed,pk_typed,nonce_typed,nonce_typed),action).
+action(decompose_2(B,A,Pks,Pka,Na,Text),
+	true,
+	[iknows(pair(pk(Pka),pair(mr(A),pair(crypt(inv(pk(Pks)),pair(pk(Pka),mr(A))),pair(nonce(Na),pair(mr(B),pair(nonce(Text),crypt(inv(pk(Pka)),pair(nonce(Na),pair(mr(B),nonce(Text)))))))))))],
+	[iknows(pk(Pka)),
+	 iknows(mr(A)),
+	 iknows(crypt(inv(pk(Pks)),pair(pk(Pka),mr(A)))),
+	 iknows(nonce(Na)),
+	 iknows(mr(B)),
+	 iknows(nonce(Text)),
+	 iknows(crypt(inv(pk(Pka)),pair(nonce(Na),pair(mr(B),nonce(Text)))))],
+	[]).
+
+constant(decrypt_private_key_3(agent_typed,pk_typed,nonce_typed,nonce_typed),action).
+action(decrypt_private_key_3(B,Pka,Na,Text),
+	true,
+	[iknows(crypt(inv(pk(Pka)),pair(nonce(Na),pair(mr(B),nonce(Text))))),
+	 iknows(pk(Pka))],
+	[iknows(nonce(Na)),
+	 iknows(mr(B)),
+	 iknows(nonce(Text))],
+	[]).
+
+constant(impersonate_1(agent_typed,agent_typed,pk_typed,pk_typed,nonce_typed,nonce_typed,nat,pk_typed,nonce_typed,nonce_typed),action).
+action(impersonate_1(B,A,Pks,Dummy_Pka,Dummy_Na,Dummy_Text,SID,Pka,Na,Text),
+	true,
+	[state_iso1_Resp(mr(B),mr(A),pk(Pks),0,pk(Dummy_Pka),nonce(Dummy_Na),nonce(Dummy_Text),SID),
+	 iknows(pk(Pka)),
+	 iknows(mr(A)),
+	 iknows(crypt(inv(pk(Pks)),pair(pk(Pka),mr(A)))),
+	 iknows(nonce(Na)),
+	 iknows(mr(B)),
+	 iknows(nonce(Text)),
+	 iknows(crypt(inv(pk(Pka)),pair(nonce(Na),pair(mr(B),nonce(Text)))))],
+	[iknows(pair(pk(Pka),pair(mr(A),pair(crypt(inv(pk(Pks)),pair(pk(Pka),mr(A))),pair(nonce(Na),pair(mr(B),pair(nonce(Text),crypt(inv(pk(Pka)),pair(nonce(Na),pair(mr(B),nonce(Text)))))))))))],
+	[]).
+
+constant(impersonate_2(agent_typed,agent_typed,pk_typed,pk_typed,nonce_typed,nonce_typed,nat,pk_typed,nonce_typed,nonce_typed),action).
+action(impersonate_2(B,A,Pks,Dummy_Pka,Dummy_Na,Dummy_Text,SID,Pka,Na,Text),
+	true,
+	[state_iso1_Resp(mr(B),mr(A),pk(Pks),0,pk(Dummy_Pka),nonce(Dummy_Na),nonce(Dummy_Text),SID),
+	 iknows(pk(Pka)),
+	 iknows(mr(A)),
+	 iknows(crypt(inv(pk(Pks)),pair(pk(Pka),mr(A)))),
+	 iknows(nonce(Na)),
+	 iknows(mr(B)),
+	 iknows(nonce(Text)),
+	 iknows(inv(pk(Pka)))],
+	[iknows(pair(pk(Pka),pair(mr(A),pair(crypt(inv(pk(Pks)),pair(pk(Pka),mr(A))),pair(nonce(Na),pair(mr(B),pair(nonce(Text),crypt(inv(pk(Pka)),pair(nonce(Na),pair(mr(B),nonce(Text)))))))))))],
+	[]).
+
+constant(impersonate_3(agent_typed,agent_typed,pk_typed,pk_typed,nonce_typed,nonce_typed,nat,pk_typed,nonce_typed,nonce_typed),action).
+action(impersonate_3(B,A,Pks,Dummy_Pka,Dummy_Na,Dummy_Text,SID,Pka,Na,Text),
+	true,
+	[state_iso1_Resp(mr(B),mr(A),pk(Pks),0,pk(Dummy_Pka),nonce(Dummy_Na),nonce(Dummy_Text),SID),
+	 iknows(pk(Pka)),
+	 iknows(mr(A)),
+	 iknows(inv(pk(Pks))),
+	 iknows(nonce(Na)),
+	 iknows(mr(B)),
+	 iknows(nonce(Text)),
+	 iknows(crypt(inv(pk(Pka)),pair(nonce(Na),pair(mr(B),nonce(Text)))))],
+	[iknows(pair(pk(Pka),pair(mr(A),pair(crypt(inv(pk(Pks)),pair(pk(Pka),mr(A))),pair(nonce(Na),pair(mr(B),pair(nonce(Text),crypt(inv(pk(Pka)),pair(nonce(Na),pair(mr(B),nonce(Text)))))))))))],
+	[]).
+
+constant(impersonate_4(agent_typed,agent_typed,pk_typed,pk_typed,nonce_typed,nonce_typed,nat,pk_typed,nonce_typed,nonce_typed),action).
+action(impersonate_4(B,A,Pks,Dummy_Pka,Dummy_Na,Dummy_Text,SID,Pka,Na,Text),
+	true,
+	[state_iso1_Resp(mr(B),mr(A),pk(Pks),0,pk(Dummy_Pka),nonce(Dummy_Na),nonce(Dummy_Text),SID),
+	 iknows(pk(Pka)),
+	 iknows(mr(A)),
+	 iknows(inv(pk(Pks))),
+	 iknows(nonce(Na)),
+	 iknows(mr(B)),
+	 iknows(nonce(Text)),
+	 iknows(inv(pk(Pka)))],
+	[iknows(pair(pk(Pka),pair(mr(A),pair(crypt(inv(pk(Pks)),pair(pk(Pka),mr(A))),pair(nonce(Na),pair(mr(B),pair(nonce(Text),crypt(inv(pk(Pka)),pair(nonce(Na),pair(mr(B),nonce(Text)))))))))))],
+	[]).
+
+
+% GOALS
+goal(authentication_on_na(A1Goal,A2Goal,MGoal,SID),on_the_fly_conditions([\+A2Goal=i]),
+	[request(mr(A1Goal),mr(A2Goal),pid(na),MGoal,SID),
+	 ~witness(mr(A2Goal),mr(A1Goal),pid(na),MGoal)]).
+
+goal(replay_protection_on_na(A2Goal,A1Goal,MGoal,SID1,SID2),on_the_fly_conditions([\+SID1=SID2,\+A2Goal=i]),
+	[request(mr(A1Goal),mr(A2Goal),pid(na),MGoal,SID1),
+	 request(mr(A1Goal),mr(A2Goal),pid(na),MGoal,SID2)]).
+
+
+% EQUATIONS
+
+% USER_AXIOMS
+
+
+% INVOKED DURING THE LOADING (USEFUL FOR SETTING)
+init_sate :-
+	set(verification_abstraction,off),
+	set(if2sate_version,2).
+
+
+% PREDICATE TO EVALUATE ON_THE_FLY_CONDITIONS
+on_the_fly_conditions([]).
+on_the_fly_conditions([C|Cs]) :-
+	ground(C),
+	call(C),
+	on_the_fly_conditions(Cs).

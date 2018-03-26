@@ -1,0 +1,20 @@
+SPAN
+A Security Protocol Animator
+---------------------------------------------------------------------------
+SPAN: Copyright (C) 2006-2009 Yann Glouche, Thomas Genet, Olivier Heen,
+      		    	      Erwan Houssay and Ronan Saillard
+
+The CAS+ Parser includes source code from the CASRUL tool
+CASRUL: Copyright (C) 2001 Florent Jacquemard, Michael Rusinowitch and
+      		    	   Laurent Vigneron.
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU Library General Public License version 2, as
+published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+See the GNU Library General Public License version 2 for more details
+(enclosed in the file LGPL).

@@ -1,0 +1,29 @@
+protocol NSPKProtocolOriginalVersionWithoutKeyServer;
+identifiers
+A, B		: user;
+Na, Nb		: number;
+Ka, Kb		: public_key;
+
+messages
+1. A -> B : {Na, A}Kb
+2. B -> A : {Na, Nb}Ka
+3. A -> B : {Nb}Kb
+
+
+knowledge
+A	: A, B, Ka, Kb;
+B	: A, B, Ka, Kb;
+
+session_instances
+[A:alice,B:bob,Ka:ka,Kb:kb,Kb:ki]
+[A:alice, B:i, Ka:ka, Kb:ki]
+;
+
+intruder_knowledge
+alice,bob,ka,kb,ki',ki;
+
+goal
+%secrecy_of Na [A,B];
+secrecy_of Nb [A,B];
+%A authenticates B on Nb;
+%B authenticates A on Na;

@@ -1,0 +1,23 @@
+protocol DiffieHellman;
+identifiers
+A,B : user;
+Secret,Na,Nb,G : number;
+
+messages
+1. A -> B 	: G^Na
+2. B -> A	: G^Nb
+3. A -> B	: {Secret}((G^Na)^Nb)
+
+knowledge
+A	: A,B,G;
+B	: A,B,G;
+
+session_instances
+ [A:alice,B:bob,G:g];
+
+intruder_knowledge
+ alice,bob,g;
+
+goal
+ secrecy_of Secret [A,B];
+

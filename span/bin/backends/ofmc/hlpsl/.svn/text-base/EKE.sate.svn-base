@@ -1,0 +1,482 @@
+% SATE OUTPUT
+
+% SORTS
+sort(action).
+sort(fresh_const).
+sort(fresh_public_key_typed).
+sort(fresh_public_key).
+sort(fresh_nonce_typed).
+sort(fresh_nonce).
+sort(agent).
+sort(agent_typed).
+sort(nonce).
+sort(nonce_typed).
+sort(symmetric_key).
+sort(sk_typed).
+sort(public_key).
+sort(pk_typed).
+sort(message).
+sort(nat).
+sort(protocol_id).
+sort(protocol_id_typed).
+sort(set).
+sort(fluent).
+
+% CONSTANTS
+constant(initial_state(initial_state_id),fluent).
+constant(fpk(fresh_public_key_id,agent,nat),fresh_public_key_typed).
+constant(pk(fresh_public_key_typed),fresh_public_key).
+constant(fsk(fresh_symmetric_key_id,agent,nat),fresh_symmetric_key_typed).
+constant(sk(fresh_symmetric_key_typed),fresh_symmetric_key).
+constant(fn(fresh_nonce_id,agent,nat),fresh_nonce_typed).
+constant(nonce(fresh_nonce_typed),fresh_nonce).
+constant(fmr(fresh_agent_id,agent,nat),fresh_agent_typed).
+constant(mr(fresh_agent_typed),fresh_agent).
+constant(ff(fresh_function_id,agent,nat),fresh_function_typed).
+constant(fu(fresh_function_typed),fresh_function).
+constant(fresh(fresh_const),fluent).
+constant(sec_k2,protocol_id_typed).
+constant(nb,protocol_id_typed).
+constant(na,protocol_id_typed).
+constant(sec_k1,protocol_id_typed).
+constant(dummy_nonce,nonce_typed).
+constant(dummy_pk,pk_typed).
+constant(set_76,set).
+constant(set_74,set).
+constant(set_70,set).
+constant(set_59,set).
+constant(7,nat).
+constant(6,nat).
+constant(3,nat).
+constant(4,nat).
+constant(2,nat).
+constant(1,nat).
+constant(0,nat).
+constant(start,message).
+constant(kab,sk_typed).
+constant(b,agent_typed).
+constant(i,agent_typed).
+constant(a,agent_typed).
+constant(mr(agent_typed),agent).
+constant(nonce(nonce_typed),nonce).
+constant(sk(sk_typed),symmetric_key).
+constant(pk(pk_typed),public_key).
+constant(fu(function_typed),function).
+constant(pid(protocol_id_typed),protocol_id).
+constant(pair(message,message),message).
+constant(crypt(message,message),message).
+constant(scrypt(message,message),message).
+constant(iknows(message),fluent).
+constant(contains(message,set),fluent).
+constant(witness(agent,agent,protocol_id,message),fluent).
+constant(request(agent,agent,protocol_id,message,nat),fluent).
+constant(secret(message,protocol_id,set),fluent).
+constant(state_eke_Resp(agent,agent,symmetric_key,nat,nonce,nonce,nonce,public_key,set,nat),fluent).
+constant(state_eke_Init(agent,agent,symmetric_key,nat,public_key,nonce,nonce,nonce,set,nat),fluent).
+constant(init1,initial_state_id).
+constant(ea,fresh_public_key_id).
+constant(na0,fresh_nonce_id).
+constant(k,fresh_nonce_id).
+constant(nb0,fresh_nonce_id).
+
+% SUPERSORTS
+super_sort(pk_typed,fresh_public_key_typed).
+super_sort(fresh_const,fresh_public_key).
+super_sort(sk_typed,fresh_symmetric_key_typed).
+super_sort(fresh_const,fresh_symmetric_key).
+super_sort(nonce_typed,fresh_nonce_typed).
+super_sort(fresh_const,fresh_nonce).
+super_sort(agent_typed,fresh_agent_typed).
+super_sort(fresh_const,fresh_agent).
+super_sort(function_typed,fresh_function_typed).
+super_sort(fresh_const,fresh_function).
+super_sort(message,agent).
+super_sort(message,nonce).
+super_sort(message,symmetric_key).
+super_sort(message,public_key).
+super_sort(message,function).
+super_sort(message,nat).
+super_sort(message,protocol_id).
+super_sort(message,bool).
+
+% INITIAL STATES
+facts([initial_state(init1),
+	 iknows(start),
+	 iknows(mr(a)),
+	 iknows(mr(b)),
+	 iknows(mr(i)),
+	 state_eke_Init(mr(a),mr(b),sk(kab),0,pk(dummy_pk),nonce(dummy_nonce),nonce(dummy_nonce),nonce(dummy_nonce),set_59,3),
+	 state_eke_Resp(mr(b),mr(a),sk(kab),0,nonce(dummy_nonce),nonce(dummy_nonce),nonce(dummy_nonce),pk(dummy_pk),set_70,4),
+	 state_eke_Init(mr(b),mr(a),sk(kab),0,pk(dummy_pk),nonce(dummy_nonce),nonce(dummy_nonce),nonce(dummy_nonce),set_74,6),
+	 state_eke_Resp(mr(a),mr(b),sk(kab),0,nonce(dummy_nonce),nonce(dummy_nonce),nonce(dummy_nonce),pk(dummy_pk),set_76,7),
+	 fresh(pk(fpk(ea,mr(a),3))),
+	 fresh(pk(fpk(ea,mr(b),6))),
+	 fresh(nonce(fn(na0,mr(a),3))),
+	 fresh(nonce(fn(na0,mr(b),6))),
+	 fresh(nonce(fn(k,mr(b),4))),
+	 fresh(nonce(fn(k,mr(a),7))),
+	 fresh(nonce(fn(nb0,mr(b),4))),
+	 fresh(nonce(fn(nb0,mr(a),7)))]).
+
+
+% RULES
+constant(sc_step_0_1(agent_typed,agent_typed,sk_typed,pk_typed,nonce_typed,nonce_typed,nonce_typed,set,nat),action).
+action(sc_step_0_1(A,B,Kab,Dummy_Ea,Na,Nb,K,Set_20,SID),
+	true,
+	[state_eke_Init(mr(A),mr(B),sk(Kab),0,pk(Dummy_Ea),nonce(Na),nonce(Nb),nonce(K),Set_20,SID),
+	 fresh(pk(fpk(ea,mr(A),SID))),
+	 iknows(start)],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),1,pk(fpk(ea,mr(A),SID)),nonce(Na),nonce(Nb),nonce(K),Set_20,SID),
+	 iknows(scrypt(sk(Kab),pk(fpk(ea,mr(A),SID))))],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),0,pk(Dummy_Ea),nonce(Na),nonce(Nb),nonce(K),Set_20,SID),
+	 fresh(pk(fpk(ea,mr(A),SID)))]).
+
+constant(decrypt_symmetric_key_1(agent_typed,sk_typed,nat),action).
+action(decrypt_symmetric_key_1(A,Kab,SID),
+	true,
+	[iknows(scrypt(sk(Kab),pk(fpk(ea,mr(A),SID)))),
+	 iknows(sk(Kab))],
+	[iknows(pk(fpk(ea,mr(A),SID)))],
+	[]).
+
+constant(sc_step_1_1(agent_typed,agent_typed,sk_typed,pk_typed,nonce_typed,nonce_typed,nonce_typed,set,nat,nonce_typed),action).
+action(sc_step_1_1(A,B,Kab,Ea,Dummy_Na,Nb,Dummy_K,Dummy_Set_20,SID,K),
+	true,
+	[state_eke_Init(mr(A),mr(B),sk(Kab),1,pk(Ea),nonce(Dummy_Na),nonce(Nb),nonce(Dummy_K),Dummy_Set_20,SID),
+	 fresh(nonce(fn(na0,mr(A),SID))),
+	 iknows(scrypt(sk(Kab),crypt(pk(Ea),nonce(K))))],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),2,pk(Ea),nonce(fn(na0,mr(A),SID)),nonce(Nb),nonce(K),Dummy_Set_20,SID),
+	 secret(nonce(K),pid(sec_k1),Dummy_Set_20),
+	 witness(mr(A),mr(B),pid(na),nonce(fn(na0,mr(A),SID))),
+	 contains(mr(A),Dummy_Set_20),
+	 contains(mr(B),Dummy_Set_20),
+	 iknows(scrypt(nonce(K),nonce(fn(na0,mr(A),SID))))],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),1,pk(Ea),nonce(Dummy_Na),nonce(Nb),nonce(Dummy_K),Dummy_Set_20,SID),
+	 fresh(nonce(fn(na0,mr(A),SID)))]).
+
+constant(sc_step_1_2(agent_typed,agent_typed,sk_typed,pk_typed,nonce_typed,nonce_typed,nonce_typed,set,nat,nonce_typed),action).
+action(sc_step_1_2(A,B,Kab,Ea,Dummy_Na,Nb,Dummy_K,Dummy_Set_20,SID,K),
+	true,
+	[state_eke_Init(mr(A),mr(B),sk(Kab),1,pk(Ea),nonce(Dummy_Na),nonce(Nb),nonce(Dummy_K),Dummy_Set_20,SID),
+	 fresh(nonce(fn(na0,mr(A),SID))),
+	 iknows(sk(Kab)),
+	 iknows(crypt(pk(Ea),nonce(K)))],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),2,pk(Ea),nonce(fn(na0,mr(A),SID)),nonce(Nb),nonce(K),Dummy_Set_20,SID),
+	 secret(nonce(K),pid(sec_k1),Dummy_Set_20),
+	 witness(mr(A),mr(B),pid(na),nonce(fn(na0,mr(A),SID))),
+	 contains(mr(A),Dummy_Set_20),
+	 contains(mr(B),Dummy_Set_20),
+	 iknows(scrypt(nonce(K),nonce(fn(na0,mr(A),SID))))],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),1,pk(Ea),nonce(Dummy_Na),nonce(Nb),nonce(Dummy_K),Dummy_Set_20,SID),
+	 fresh(nonce(fn(na0,mr(A),SID)))]).
+
+constant(sc_step_1_3(agent_typed,agent_typed,sk_typed,pk_typed,nonce_typed,nonce_typed,nonce_typed,set,nat,nonce_typed),action).
+action(sc_step_1_3(A,B,Kab,Ea,Dummy_Na,Nb,Dummy_K,Dummy_Set_20,SID,K),
+	true,
+	[state_eke_Init(mr(A),mr(B),sk(Kab),1,pk(Ea),nonce(Dummy_Na),nonce(Nb),nonce(Dummy_K),Dummy_Set_20,SID),
+	 fresh(nonce(fn(na0,mr(A),SID))),
+	 iknows(sk(Kab)),
+	 iknows(pk(Ea)),
+	 iknows(nonce(K))],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),2,pk(Ea),nonce(fn(na0,mr(A),SID)),nonce(Nb),nonce(K),Dummy_Set_20,SID),
+	 secret(nonce(K),pid(sec_k1),Dummy_Set_20),
+	 witness(mr(A),mr(B),pid(na),nonce(fn(na0,mr(A),SID))),
+	 contains(mr(A),Dummy_Set_20),
+	 contains(mr(B),Dummy_Set_20),
+	 iknows(scrypt(nonce(K),nonce(fn(na0,mr(A),SID))))],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),1,pk(Ea),nonce(Dummy_Na),nonce(Nb),nonce(Dummy_K),Dummy_Set_20,SID),
+	 fresh(nonce(fn(na0,mr(A),SID)))]).
+
+constant(decrypt_symmetric_key_2(sk_typed,pk_typed,nonce_typed),action).
+action(decrypt_symmetric_key_2(Kab,Ea,K),
+	true,
+	[iknows(scrypt(sk(Kab),crypt(pk(Ea),nonce(K)))),
+	 iknows(sk(Kab))],
+	[iknows(crypt(pk(Ea),nonce(K)))],
+	[]).
+
+constant(decrypt_public_key_1(pk_typed,nonce_typed),action).
+action(decrypt_public_key_1(Ea,K),
+	true,
+	[iknows(crypt(pk(Ea),nonce(K))),
+	 iknows(inv(pk(Ea)))],
+	[iknows(nonce(K))],
+	[]).
+
+constant(decrypt_symmetric_key_3(agent_typed,nat,nonce_typed),action).
+action(decrypt_symmetric_key_3(A,SID,K),
+	true,
+	[iknows(scrypt(nonce(K),nonce(fn(na0,mr(A),SID)))),
+	 iknows(nonce(K))],
+	[iknows(nonce(fn(na0,mr(A),SID)))],
+	[]).
+
+constant(sc_step_2_1(agent_typed,agent_typed,sk_typed,pk_typed,nonce_typed,nonce_typed,nonce_typed,set,nat,nonce_typed),action).
+action(sc_step_2_1(A,B,Kab,Ea,Na,Dummy_Nb,K,Set_20,SID,Nb),
+	true,
+	[state_eke_Init(mr(A),mr(B),sk(Kab),2,pk(Ea),nonce(Na),nonce(Dummy_Nb),nonce(K),Set_20,SID),
+	 iknows(scrypt(nonce(K),pair(nonce(Na),nonce(Nb))))],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),3,pk(Ea),nonce(Na),nonce(Nb),nonce(K),Set_20,SID),
+	 request(mr(A),mr(B),pid(nb),nonce(Nb),SID),
+	 iknows(scrypt(nonce(K),nonce(Nb)))],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),2,pk(Ea),nonce(Na),nonce(Dummy_Nb),nonce(K),Set_20,SID)]).
+
+constant(sc_step_2_2(agent_typed,agent_typed,sk_typed,pk_typed,nonce_typed,nonce_typed,nonce_typed,set,nat,nonce_typed),action).
+action(sc_step_2_2(A,B,Kab,Ea,Na,Dummy_Nb,K,Set_20,SID,Nb),
+	true,
+	[state_eke_Init(mr(A),mr(B),sk(Kab),2,pk(Ea),nonce(Na),nonce(Dummy_Nb),nonce(K),Set_20,SID),
+	 iknows(nonce(K)),
+	 iknows(nonce(Na)),
+	 iknows(nonce(Nb))],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),3,pk(Ea),nonce(Na),nonce(Nb),nonce(K),Set_20,SID),
+	 request(mr(A),mr(B),pid(nb),nonce(Nb),SID),
+	 iknows(scrypt(nonce(K),nonce(Nb)))],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),2,pk(Ea),nonce(Na),nonce(Dummy_Nb),nonce(K),Set_20,SID)]).
+
+constant(decrypt_symmetric_key_4(nonce_typed,nonce_typed,nonce_typed),action).
+action(decrypt_symmetric_key_4(Na,K,Nb),
+	true,
+	[iknows(scrypt(nonce(K),pair(nonce(Na),nonce(Nb)))),
+	 iknows(nonce(K))],
+	[iknows(nonce(Na)),
+	 iknows(nonce(Nb))],
+	[]).
+
+constant(decrypt_symmetric_key_5(nonce_typed,nonce_typed),action).
+action(decrypt_symmetric_key_5(K,Nb),
+	true,
+	[iknows(scrypt(nonce(K),nonce(Nb))),
+	 iknows(nonce(K))],
+	[iknows(nonce(Nb))],
+	[]).
+
+constant(sc_step_3_1(agent_typed,agent_typed,sk_typed,nonce_typed,nonce_typed,nonce_typed,pk_typed,set,nat,pk_typed),action).
+action(sc_step_3_1(B,A,Kab,Na,Nb,Dummy_K,Dummy_Ea,Dummy_Set_39,SID,Ea),
+	true,
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),0,nonce(Na),nonce(Nb),nonce(Dummy_K),pk(Dummy_Ea),Dummy_Set_39,SID),
+	 fresh(nonce(fn(k,mr(B),SID))),
+	 iknows(scrypt(sk(Kab),pk(Ea)))],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),1,nonce(Na),nonce(Nb),nonce(fn(k,mr(B),SID)),pk(Ea),Dummy_Set_39,SID),
+	 secret(nonce(fn(k,mr(B),SID)),pid(sec_k2),Dummy_Set_39),
+	 contains(mr(A),Dummy_Set_39),
+	 contains(mr(B),Dummy_Set_39),
+	 iknows(scrypt(sk(Kab),crypt(pk(Ea),nonce(fn(k,mr(B),SID)))))],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),0,nonce(Na),nonce(Nb),nonce(Dummy_K),pk(Dummy_Ea),Dummy_Set_39,SID),
+	 fresh(nonce(fn(k,mr(B),SID)))]).
+
+constant(sc_step_3_2(agent_typed,agent_typed,sk_typed,nonce_typed,nonce_typed,nonce_typed,pk_typed,set,nat,pk_typed),action).
+action(sc_step_3_2(B,A,Kab,Na,Nb,Dummy_K,Dummy_Ea,Dummy_Set_39,SID,Ea),
+	true,
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),0,nonce(Na),nonce(Nb),nonce(Dummy_K),pk(Dummy_Ea),Dummy_Set_39,SID),
+	 fresh(nonce(fn(k,mr(B),SID))),
+	 iknows(sk(Kab)),
+	 iknows(pk(Ea))],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),1,nonce(Na),nonce(Nb),nonce(fn(k,mr(B),SID)),pk(Ea),Dummy_Set_39,SID),
+	 secret(nonce(fn(k,mr(B),SID)),pid(sec_k2),Dummy_Set_39),
+	 contains(mr(A),Dummy_Set_39),
+	 contains(mr(B),Dummy_Set_39),
+	 iknows(scrypt(sk(Kab),crypt(pk(Ea),nonce(fn(k,mr(B),SID)))))],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),0,nonce(Na),nonce(Nb),nonce(Dummy_K),pk(Dummy_Ea),Dummy_Set_39,SID),
+	 fresh(nonce(fn(k,mr(B),SID)))]).
+
+constant(decrypt_symmetric_key_6(sk_typed,pk_typed),action).
+action(decrypt_symmetric_key_6(Kab,Ea),
+	true,
+	[iknows(scrypt(sk(Kab),pk(Ea))),
+	 iknows(sk(Kab))],
+	[iknows(pk(Ea))],
+	[]).
+
+constant(decrypt_symmetric_key_7(agent_typed,sk_typed,nat,pk_typed),action).
+action(decrypt_symmetric_key_7(B,Kab,SID,Ea),
+	true,
+	[iknows(scrypt(sk(Kab),crypt(pk(Ea),nonce(fn(k,mr(B),SID))))),
+	 iknows(sk(Kab))],
+	[iknows(crypt(pk(Ea),nonce(fn(k,mr(B),SID))))],
+	[]).
+
+constant(decrypt_public_key_2(agent_typed,nat,pk_typed),action).
+action(decrypt_public_key_2(B,SID,Ea),
+	true,
+	[iknows(crypt(pk(Ea),nonce(fn(k,mr(B),SID)))),
+	 iknows(inv(pk(Ea)))],
+	[iknows(nonce(fn(k,mr(B),SID)))],
+	[]).
+
+constant(sc_step_4_1(agent_typed,agent_typed,sk_typed,nonce_typed,nonce_typed,nonce_typed,pk_typed,set,nat,nonce_typed),action).
+action(sc_step_4_1(B,A,Kab,Dummy_Na,Dummy_Nb,K,Ea,Set_39,SID,Na),
+	true,
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),1,nonce(Dummy_Na),nonce(Dummy_Nb),nonce(K),pk(Ea),Set_39,SID),
+	 fresh(nonce(fn(nb0,mr(B),SID))),
+	 iknows(scrypt(nonce(K),nonce(Na)))],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),2,nonce(Na),nonce(fn(nb0,mr(B),SID)),nonce(K),pk(Ea),Set_39,SID),
+	 witness(mr(B),mr(A),pid(nb),nonce(fn(nb0,mr(B),SID))),
+	 iknows(scrypt(nonce(K),pair(nonce(Na),nonce(fn(nb0,mr(B),SID)))))],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),1,nonce(Dummy_Na),nonce(Dummy_Nb),nonce(K),pk(Ea),Set_39,SID),
+	 fresh(nonce(fn(nb0,mr(B),SID)))]).
+
+constant(sc_step_4_2(agent_typed,agent_typed,sk_typed,nonce_typed,nonce_typed,nonce_typed,pk_typed,set,nat,nonce_typed),action).
+action(sc_step_4_2(B,A,Kab,Dummy_Na,Dummy_Nb,K,Ea,Set_39,SID,Na),
+	true,
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),1,nonce(Dummy_Na),nonce(Dummy_Nb),nonce(K),pk(Ea),Set_39,SID),
+	 fresh(nonce(fn(nb0,mr(B),SID))),
+	 iknows(nonce(K)),
+	 iknows(nonce(Na))],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),2,nonce(Na),nonce(fn(nb0,mr(B),SID)),nonce(K),pk(Ea),Set_39,SID),
+	 witness(mr(B),mr(A),pid(nb),nonce(fn(nb0,mr(B),SID))),
+	 iknows(scrypt(nonce(K),pair(nonce(Na),nonce(fn(nb0,mr(B),SID)))))],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),1,nonce(Dummy_Na),nonce(Dummy_Nb),nonce(K),pk(Ea),Set_39,SID),
+	 fresh(nonce(fn(nb0,mr(B),SID)))]).
+
+constant(decrypt_symmetric_key_8(agent_typed,nonce_typed,nat,nonce_typed),action).
+action(decrypt_symmetric_key_8(B,K,SID,Na),
+	true,
+	[iknows(scrypt(nonce(K),pair(nonce(Na),nonce(fn(nb0,mr(B),SID))))),
+	 iknows(nonce(K))],
+	[iknows(nonce(Na)),
+	 iknows(nonce(fn(nb0,mr(B),SID)))],
+	[]).
+
+constant(sc_step_5_1(agent_typed,agent_typed,sk_typed,nonce_typed,nonce_typed,nonce_typed,pk_typed,set,nat),action).
+action(sc_step_5_1(B,A,Kab,Na,Nb,K,Ea,Set_39,SID),
+	true,
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),2,nonce(Na),nonce(Nb),nonce(K),pk(Ea),Set_39,SID),
+	 iknows(scrypt(nonce(K),nonce(Nb)))],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),3,nonce(Na),nonce(Nb),nonce(K),pk(Ea),Set_39,SID),
+	 request(mr(B),mr(A),pid(na),nonce(Na),SID)],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),2,nonce(Na),nonce(Nb),nonce(K),pk(Ea),Set_39,SID)]).
+
+constant(sc_step_5_2(agent_typed,agent_typed,sk_typed,nonce_typed,nonce_typed,nonce_typed,pk_typed,set,nat),action).
+action(sc_step_5_2(B,A,Kab,Na,Nb,K,Ea,Set_39,SID),
+	true,
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),2,nonce(Na),nonce(Nb),nonce(K),pk(Ea),Set_39,SID),
+	 iknows(nonce(K)),
+	 iknows(nonce(Nb))],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),3,nonce(Na),nonce(Nb),nonce(K),pk(Ea),Set_39,SID),
+	 request(mr(B),mr(A),pid(na),nonce(Na),SID)],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),2,nonce(Na),nonce(Nb),nonce(K),pk(Ea),Set_39,SID)]).
+
+
+% CONSTRAINTS
+
+% GOALS
+goal(secrecy_of_sec_k1(MGoal,ASGoal),true,
+	[secret(MGoal,pid(sec_k1),ASGoal),
+	 iknows(MGoal),
+	 ~contains(mr(i),ASGoal)]).
+
+goal(secrecy_of_sec_k2(MGoal,ASGoal),true,
+	[secret(MGoal,pid(sec_k2),ASGoal),
+	 iknows(MGoal),
+	 ~contains(mr(i),ASGoal)]).
+
+goal(authentication_on_nb(A1Goal,A2Goal,MGoal,SID),on_the_fly_conditions([\+A2Goal=i]),
+	[request(mr(A1Goal),mr(A2Goal),pid(nb),MGoal,SID),
+	 ~witness(mr(A2Goal),mr(A1Goal),pid(nb),MGoal)]).
+
+goal(replay_protection_on_nb(A2Goal,A1Goal,MGoal,SID1,SID2),on_the_fly_conditions([\+SID1=SID2,\+A2Goal=i]),
+	[request(mr(A1Goal),mr(A2Goal),pid(nb),MGoal,SID1),
+	 request(mr(A1Goal),mr(A2Goal),pid(nb),MGoal,SID2)]).
+
+goal(authentication_on_na(A1Goal,A2Goal,MGoal,SID),on_the_fly_conditions([\+A2Goal=i]),
+	[request(mr(A1Goal),mr(A2Goal),pid(na),MGoal,SID),
+	 ~witness(mr(A2Goal),mr(A1Goal),pid(na),MGoal)]).
+
+goal(replay_protection_on_na(A2Goal,A1Goal,MGoal,SID1,SID2),on_the_fly_conditions([\+SID1=SID2,\+A2Goal=i]),
+	[request(mr(A1Goal),mr(A2Goal),pid(na),MGoal,SID1),
+	 request(mr(A1Goal),mr(A2Goal),pid(na),MGoal,SID2)]).
+
+
+% EQUATIONS
+
+% USER_AXIOMS
+
+
+% INVOKED DURING THE LOADING (USEFUL FOR SETTING)
+init_sate :-
+	set(verification_abstraction,off),
+	set(if2sate_version,2).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% NOTE: these prolog facts are not mandatory and are useful only for
+%       printing a user-friendly output when the triple_step optimization
+%       is enabled. The user is invited to neglect these declarations.
+triple_step_action(step_0(A,B,Kab,Dummy_Ea,Na,Nb,K,Set_20,SID),
+	true,
+	[state_eke_Init(mr(A),mr(B),sk(Kab),0,pk(Dummy_Ea),nonce(Na),nonce(Nb),nonce(K),Set_20,SID),
+	 iknows(start),
+	 fresh(pk(fpk(ea,mr(A),SID)))],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),1,pk(fpk(ea,mr(A),SID)),nonce(Na),nonce(Nb),nonce(K),Set_20,SID),
+	 iknows(scrypt(sk(Kab),pk(fpk(ea,mr(A),SID))))],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),0,pk(Dummy_Ea),nonce(Na),nonce(Nb),nonce(K),Set_20,SID),
+	 fresh(pk(fpk(ea,mr(A),SID)))]).
+
+triple_step_action(step_1(A,B,Kab,Ea,Dummy_Na,Nb,Dummy_K,Dummy_Set_20,SID,K),
+	true,
+	[state_eke_Init(mr(A),mr(B),sk(Kab),1,pk(Ea),nonce(Dummy_Na),nonce(Nb),nonce(Dummy_K),Dummy_Set_20,SID),
+	 iknows(scrypt(sk(Kab),crypt(pk(Ea),nonce(K)))),
+	 fresh(nonce(fn(na0,mr(A),SID)))],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),2,pk(Ea),nonce(fn(na0,mr(A),SID)),nonce(Nb),nonce(K),Dummy_Set_20,SID),
+	 iknows(scrypt(nonce(K),nonce(fn(na0,mr(A),SID)))),
+	 secret(nonce(K),pid(sec_k1),Dummy_Set_20),
+	 witness(mr(A),mr(B),pid(na),nonce(fn(na0,mr(A),SID))),
+	 contains(mr(A),Dummy_Set_20),
+	 contains(mr(B),Dummy_Set_20)],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),1,pk(Ea),nonce(Dummy_Na),nonce(Nb),nonce(Dummy_K),Dummy_Set_20,SID),
+	 fresh(nonce(fn(na0,mr(A),SID)))]).
+
+triple_step_action(step_2(A,B,Kab,Ea,Na,Dummy_Nb,K,Set_20,SID,Nb),
+	true,
+	[state_eke_Init(mr(A),mr(B),sk(Kab),2,pk(Ea),nonce(Na),nonce(Dummy_Nb),nonce(K),Set_20,SID),
+	 iknows(scrypt(nonce(K),pair(nonce(Na),nonce(Nb))))],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),3,pk(Ea),nonce(Na),nonce(Nb),nonce(K),Set_20,SID),
+	 iknows(scrypt(nonce(K),nonce(Nb))),
+	 request(mr(A),mr(B),pid(nb),nonce(Nb),SID)],
+	[state_eke_Init(mr(A),mr(B),sk(Kab),2,pk(Ea),nonce(Na),nonce(Dummy_Nb),nonce(K),Set_20,SID)]).
+
+triple_step_action(step_3(B,A,Kab,Na,Nb,Dummy_K,Dummy_Ea,Dummy_Set_39,SID,Ea),
+	true,
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),0,nonce(Na),nonce(Nb),nonce(Dummy_K),pk(Dummy_Ea),Dummy_Set_39,SID),
+	 iknows(scrypt(sk(Kab),pk(Ea))),
+	 fresh(nonce(fn(k,mr(B),SID)))],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),1,nonce(Na),nonce(Nb),nonce(fn(k,mr(B),SID)),pk(Ea),Dummy_Set_39,SID),
+	 iknows(scrypt(sk(Kab),crypt(pk(Ea),nonce(fn(k,mr(B),SID))))),
+	 secret(nonce(fn(k,mr(B),SID)),pid(sec_k2),Dummy_Set_39),
+	 contains(mr(A),Dummy_Set_39),
+	 contains(mr(B),Dummy_Set_39)],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),0,nonce(Na),nonce(Nb),nonce(Dummy_K),pk(Dummy_Ea),Dummy_Set_39,SID),
+	 fresh(nonce(fn(k,mr(B),SID)))]).
+
+triple_step_action(step_4(B,A,Kab,Dummy_Na,Dummy_Nb,K,Ea,Set_39,SID,Na),
+	true,
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),1,nonce(Dummy_Na),nonce(Dummy_Nb),nonce(K),pk(Ea),Set_39,SID),
+	 iknows(scrypt(nonce(K),nonce(Na))),
+	 fresh(nonce(fn(nb0,mr(B),SID)))],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),2,nonce(Na),nonce(fn(nb0,mr(B),SID)),nonce(K),pk(Ea),Set_39,SID),
+	 iknows(scrypt(nonce(K),pair(nonce(Na),nonce(fn(nb0,mr(B),SID))))),
+	 witness(mr(B),mr(A),pid(nb),nonce(fn(nb0,mr(B),SID)))],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),1,nonce(Dummy_Na),nonce(Dummy_Nb),nonce(K),pk(Ea),Set_39,SID),
+	 fresh(nonce(fn(nb0,mr(B),SID)))]).
+
+triple_step_action(step_5(B,A,Kab,Na,Nb,K,Ea,Set_39,SID),
+	true,
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),2,nonce(Na),nonce(Nb),nonce(K),pk(Ea),Set_39,SID),
+	 iknows(scrypt(nonce(K),nonce(Nb)))],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),3,nonce(Na),nonce(Nb),nonce(K),pk(Ea),Set_39,SID),
+	 request(mr(B),mr(A),pid(na),nonce(Na),SID)],
+	[state_eke_Resp(mr(B),mr(A),sk(Kab),2,nonce(Na),nonce(Nb),nonce(K),pk(Ea),Set_39,SID)]).
+
+correspondence_between_action_and_step_compressed_rule(Act,SCAct) :-
+	atom_concat('sc_',Act,TmpAct),
+	atom_concat(TmpAct,_,SCAct).
+
+% PREDICATE TO EVALUATE ON_THE_FLY_CONDITIONS
+on_the_fly_conditions([]).
+on_the_fly_conditions([C|Cs]) :-
+	ground(C),
+	call(C),
+	on_the_fly_conditions(Cs).

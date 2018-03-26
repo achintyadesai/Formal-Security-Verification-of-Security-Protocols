@@ -1,0 +1,33 @@
+protocol USDP;
+identifiers
+U,D1,D2					: user;
+Push,Wait,Prefinal,Nd1,Nd2,G		: number;
+Kpd1,Kpd2				: public_key;
+
+messages
+1. U ~> D1 	: Push
+2. D1 ~> U	: Wait
+2. U ~> D2 	: Push
+3. D1 -> D2 	: G^Nd1,Kpd1
+4. D2 -> D1 	: G^Nd2,{{G^Nd1,G^Nd2}Kpd2'}((G^Nd1)^Nd1),Kpd2
+5. D1 -> D2	: {{G^Nd1,G^Nd2}Kpd1'}((G^Nd2)^Nd1)
+5. D2 ~> U 	: Prefinal
+6. U ~> D1 	: Push
+7. U ~> D2 	: Push
+
+knowledge
+U	: U,D1,D2,Push,Wait,Prefinal;
+D1	: U,D1,D2,Kpd1,G,Push,Wait,Prefinal;
+D2	: U,D1,D2,Kpd2,G,Push,Wait,Prefinal;
+
+session_instances
+ [U:user1,D1:device1,D2:device2,Kpd1:pk1,Kpd2:pk2,G:g,Push:push,Wait:wait,Prefinal:prefinal];
+
+intruder_knowledge
+ g,pk1,pk2,push,wait,prefinal;
+
+goal
+% D1 authenticates D2 on {G^Nd1,G^Nd2}Kpd2';
+% secrecy_of ((G^Nd1)^Nd2) [D1,D2];
+  secrecy_of Nd1 [D1,D2];
+

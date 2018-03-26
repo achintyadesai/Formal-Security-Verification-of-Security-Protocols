@@ -1,0 +1,61 @@
+role role_A(A:agent,B:agent,S:agent,Kas:symmetric_key,SND,RCV:channel(dy))
+played_by A
+def=
+	local
+		State:nat,Na:text,Nc:text,Kbb:symmetric_key,Tb:text,Ma:text,Kab:symmetric_key,Mb:text
+	init
+		State := 0
+	transition
+		1. State=0 /\ RCV(start) =|> State':=1 /\ Na':=new() /\ SND(Na'.A)
+		4. State=1 /\ RCV({Na.B.Kab'}_Kas.{Tb'.A.Kab'}_Kbb'.Nc'.{B.Na}_Kab') =|> State':=2 /\ secret(Kab',sec_1,{}) /\ SND({Nc'}_Kab') /\ Ma':=new() /\ SND(Ma'.{Tb'.A.Kab'}_Kbb')
+		7. State=2 /\ RCV(Mb'.{Ma.B}_Kab) =|> State':=3 /\ secret(Kab',sec_1,{}) /\ SND({A.Mb'}_Kab)
+end role
+
+role role_B(A:agent,B:agent,S:agent,Kbs:symmetric_key,Kbb:symmetric_key,SND,RCV:channel(dy))
+played_by B
+def=
+	local
+		State:nat,Nb:text,Na:text,Kas:symmetric_key,Nc:text,Tb:text,Ma:text,Kab:symmetric_key,Mb:text
+	init
+		State := 0
+	transition
+		1. State=0 /\ RCV(Na'.A) =|> State':=1 /\ Nb':=new() /\ SND(Na'.A.Nb'.B)
+		3. State=1 /\ RCV({A.Nb.Kab'}_Kbs.{Na.B.Kab'}_Kas') =|> State':=2 /\ secret(Kab',sec_1,{}) /\ Nc':=new() /\ Tb':=new() /\ SND({Na.B.Kab'}_Kas'.{Tb'.A.Kab'}_Kbb.Nc'.{B.Na}_Kab')
+		5. State=2 /\ RCV({Nc}_Kab) =|> State':=3 /\ secret(Kab',sec_1,{})
+		6. State=3 /\ RCV(Ma'.{Tb.A.Kab}_Kbb) =|> State':=4 /\ secret(Kab',sec_1,{}) /\ Mb':=new() /\ SND(Mb'.{Ma'.B}_Kab)
+		8. State=4 /\ RCV({A.Mb}_Kab) =|> State':=5 /\ secret(Kab',sec_1,{})
+end role
+
+role role_S(A:agent,B:agent,S:agent,Kas:symmetric_key,Kbs:symmetric_key,SND,RCV:channel(dy))
+played_by S
+def=
+	local
+		State:nat,Na:text,Kab:symmetric_key,Nb:text
+	init
+		State := 0
+	transition
+		2. State=0 /\ RCV(Na'.A.Nb'.B) =|> State':=1 /\ Kab':=new() /\ secret(Kab',sec_1,{}) /\ SND({A.Nb'.Kab'}_Kbs.{Na'.B.Kab'}_Kas)
+end role
+
+role session1(Kbb:symmetric_key,A:agent,B:agent,S:agent,Kas:symmetric_key,Kbs:symmetric_key)
+def=
+	local
+		SND3,RCV3,SND2,RCV2,SND1,RCV1:channel(dy)
+	composition
+		role_S(A,B,S,Kas,Kbs,SND3,RCV3) /\ role_B(A,B,S,Kbs,Kbb,SND2,RCV2) /\ role_A(A,B,S,Kas,SND1,RCV1)
+end role
+
+role environment()
+def=
+	const
+		hash_0:function,key1:symmetric_key,bob:agent,key3:symmetric_key,alice:agent,server:agent,key2:symmetric_key,sec_1:protocol_id
+	intruder_knowledge = {}
+	composition
+		session1(key3,alice,bob,server,key1,key2)
+end role
+
+goal
+	secrecy_of sec_1
+end goal
+
+environment()

@@ -1,0 +1,32 @@
+protocol BullsAuthentificationProtocol;
+identifiers
+A, B, C, S 	: user;
+Kab, Kbc 	: symmetric_key;
+Na, Nb, Nc 	: number;
+Kas, Kbs, Kcs 	: symmetric_key;
+h 		: function;
+
+messages
+1. A -> B 	: h((A,B,Na),Kas), (A,B,Na)
+2. B -> C 	: h((B,C,Nb,h((A,B,Na),Kas), (A,B,Na)),Kbs), (B,C,Nb,h((A,B,Na),Kas), (A,B,Na))
+3. C -> S 	: h((C,S,Nc,h((B,C,Nb,h((A,B,Na),Kas), (A,B,Na)),Kbs), (B,C,Nb,h((A,B,Na),Kas), (A,B,Na))),Kcs), (C,S,Nc,h((B,C,Nb,h((A,B,Na),Kas), (A,B,Na)),Kbs), (B,C,Nb,h((A,B,Na),Kas), (A,B,Na)))
+4. S -> C 	: A, B, Kab xor h(Na,Kas), {A,B,Na}Kab,
+  	  	  B, A, Kab xor h(Nb,Kbs), {B,A,Nb}Kab,
+  	  	  B, C, Kbc xor h(Nb,Kbs), {B,C,Nb}Kbc,
+	  	  C, B, Kbc xor h(Nc,Kcs), {C,B,Nc}Kbc
+5. C -> B 	: A, B, Kab xor h(Na,Kas), {A,B,Na}Kab,
+  	  	  B, A, Kab xor h(Nb,Kbs), {B,A,Nb}Kab,
+  	  	  B, C, Kbc xor h(Nb,Kbs), {B,C,Nb}Kbc
+6. B -> A 	: A, B, Kab xor h(Na,Kas), {A,B,Na}Kab
+
+knowledge
+A	: A,B,C,h,Kas,Kab;
+B	: A,B,C,h,Kbs,Kab,Kbc;
+C	: A,B,C,h,Kcs,Kbc;
+S	: A,B,C,h,Kas,Kbs,Kcs,Kab,Kbc;
+
+session_instances
+ [A:alice,B:bob,C:charles,Kab:key1,Kbc:key2,Kas:key3,Kbs:key4,Kcs:key5];
+
+goal
+ correspondence_between A,B;

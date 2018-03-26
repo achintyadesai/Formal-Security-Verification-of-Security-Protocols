@@ -1,0 +1,23 @@
+protocol WooAndLamPi;
+identifiers
+A, B, S 	: user;
+Nb 		: number;
+Kas, Kbs	: symmetric_key;
+
+messages
+1. A -> B 	: A
+2. B -> A 	: Nb
+3. A -> B 	: {Nb}Kas
+4. B -> S 	: {A, {Nb}Kas}Kbs
+5. S -> B 	: {Nb}Kbs
+
+knowledge
+A	: A,B,S,Kas;
+B	: A,B,S,Kbs;
+S	: A,B,S,Kas,Kbs;
+
+session_instances
+ [A:alice,B:bob,S:server,Kas:key1,Kbs:key2];
+
+goal
+ A weak_authenticates B on Nb;

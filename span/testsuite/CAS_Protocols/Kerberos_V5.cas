@@ -1,0 +1,29 @@
+protocol KerberosV5;
+identifiers
+A, G, C, S, U  		: user;
+N1, N2 			: number;
+L1, L2 			: number;
+T1start, T1expire,T1	: number;
+T2start, T2expire,T2 	: number;
+Kcg, Kcs, Kag, Ku, Kgs 	: symmetric_key;
+
+messages
+1. C -> A 	: U, G, L1, N1
+2. A -> C 	: U, {U, C, G, Kcg, T1start, T1expire}Kag,{G, Kcg, T1start, T1expire}Ku
+3. C -> G 	: S, L2, N2, {U, C, G, Kcg, T1start, T1expire}Kag,{C, T1}Kcg
+4. G -> C 	: U, {U, C, S, Kcs, T2start, T2expire}Kgs,{S, Kcs, T2start, T2expire, N2}Kcg
+5. C -> S 	: {U, C, S, Kcs, T2start, T2expire}Kgs,{C, T2}Kcs
+6. S -> C 	: {T2}Kcs
+
+knowledge
+A	: A,G,C,S,U;
+G	: A,G,C,S,U;
+S	: A,G,C,S,U;
+C	: A,G,C,S,U;
+U	: A,G,C,S,U;
+
+session_instances
+ [A:a,G:g,C:c,S:s,U:u];
+
+goal
+ S authenticates C on T2;

@@ -1,0 +1,58 @@
+role role_A(A:agent,B:agent,S:agent,Ka:symmetric_key,PKs:public_key,SND,RCV:channel(dy))
+played_by A
+def=
+	local
+		State:nat,Kb:symmetric_key
+	init
+		State := 0
+	transition
+		1. State=0 /\ RCV(start) =|> State':=1 /\ secret(Ka',sec_1,{}) /\ SND(B.{Ka}_PKs)
+		4. State=1 /\ RCV(B.{Kb'}_Ka) =|> State':=2 /\ secret(Ka',sec_1,{}) /\ secret(Kb',sec_2,{})
+end role
+
+role role_B(A:agent,B:agent,S:agent,Kb:symmetric_key,PKs:public_key,SND,RCV:channel(dy))
+played_by B
+def=
+	local
+		State:nat
+	init
+		State := 0
+	transition
+		2. State=0 /\ RCV(A) =|> State':=1 /\ secret(Kb',sec_2,{}) /\ SND(A.{Kb}_PKs)
+end role
+
+role role_S(A:agent,B:agent,S:agent,PKs:public_key,SND,RCV:channel(dy))
+played_by S
+def=
+	local
+		State:nat,Ka:symmetric_key,Kb:symmetric_key
+	init
+		State := 0
+	transition
+		1. State=0 /\ RCV(B.{Ka'}_PKs) =|> State':=1 /\ secret(Ka',sec_1,{}) /\ SND(A)
+		3. State=1 /\ RCV(A.{Kb'}_PKs) =|> State':=2 /\ secret(Kb',sec_2,{}) /\ secret(Ka',sec_1,{}) /\ SND(B.{Kb'}_Ka)
+end role
+
+role session1(Kb:symmetric_key,Ka:symmetric_key,A:agent,B:agent,S:agent,PKs:public_key)
+def=
+	local
+		SND3,RCV3,SND2,RCV2,SND1,RCV1:channel(dy)
+	composition
+		role_S(A,B,S,PKs,SND3,RCV3) /\ role_B(A,B,S,Kb,PKs,SND2,RCV2) /\ role_A(A,B,S,Ka,PKs,SND1,RCV1)
+end role
+
+role environment()
+def=
+	const
+		hash_0:function,serveur:agent,alice:agent,key2:symmetric_key,key1:symmetric_key,bob:agent,pk1:public_key,sec_1:protocol_id,sec_2:protocol_id
+	intruder_knowledge = {}
+	composition
+		session1(key2,key1,alice,bob,serveur,pk1)
+end role
+
+goal
+	secrecy_of sec_1
+	secrecy_of sec_2
+end goal
+
+environment()

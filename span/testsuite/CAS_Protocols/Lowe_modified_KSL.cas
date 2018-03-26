@@ -1,0 +1,27 @@
+protocol LoweModifiedKSL;
+identifiers
+A, B, S 		: user;
+Na, Nb, Nc, Ma, Mb 	: number;
+Kas, Kbs, Kab, Kbb 	: symmetric_key;
+Tb 			: number;
+
+messages
+1. A -> B 	: Na, A
+2. B -> S 	: Na, A, Nb, B
+3. S -> B 	: {A, Nb, Kab}Kbs, {Na, B, Kab}Kas
+4. B -> A 	: {Na, B, Kab}Kas, {Tb, A, Kab}Kbb, Nc, {B, Na}Kab
+5. A -> B 	: {Nc}Kab 
+6. A -> B 	: Ma, {Tb, A, Kab}Kbb
+7. B -> A 	: Mb, {Ma, B}Kab
+8. A -> B 	: {A, Mb}Kab
+
+knowledge
+A	: A,B,S,Kas;
+B	: A,B,S,Kbs,Kbb;
+S	: A,B,S,Kas,Kbs;
+
+session_instances
+ [A:alice,B:bob,S:server,Kas:key1,Kbs:key2,Kbb:key3];
+
+goal
+ secrecy_of Kab [];

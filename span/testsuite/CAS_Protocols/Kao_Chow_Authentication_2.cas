@@ -1,0 +1,22 @@
+protocol KaoChowAuthentification2;
+identifiers
+A, B, S 		: user;
+Na, Nb 			: number;
+Kab, Kbs, Kas, Kt 	: symmetric_key;
+
+messages
+1. A -> S 	: A, B, Na
+2. S -> B 	: {A, B, Na, Kab, Kt}Kas, {A, B, Na, Kab, Kt}Kbs
+3. B -> A 	: B, {A, B, Na, Kab, Kt}Kas, {Na, Kab}Kt, Nb
+4. A -> B 	: {Nb, Kab}Kt
+
+knowledge
+A	: A,B,S;
+B	: A,B,S;
+S	: A,B,S;
+
+session_instances
+ [A:alice,B:bob,S:server,Kas:key1,Kbs:key2];
+
+goal
+ secrecy_of Kab [];

@@ -1,0 +1,23 @@
+protocol CCITTX5091C;
+
+identifiers
+A, B 	: user;
+Na, Nb 	: number;
+Ta, Tb 	: number;
+Ya, Yb 	: number;
+Xa, Xb 	: number;
+PKa,PKb : public_key;
+H 	: function;
+
+messages
+1. A -> B 	: A, {Ta, Na, B, Xa, {Ya, {H(Ya)}PKa'}PKb}PKa'
+
+knowledge
+A	: A,B,PKa,PKb,Xa,H;
+B	: A,B,PKa,PKb,H;
+
+session_instances
+ [A:alice,B:bob,Xa:data,PKa:pk1,PKb:pk2,H:h];
+
+goal
+ A authenticates B on Na;

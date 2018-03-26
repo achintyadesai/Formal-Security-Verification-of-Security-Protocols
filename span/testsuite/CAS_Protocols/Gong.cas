@@ -1,0 +1,29 @@
+protocol Gong;
+
+identifiers
+A, B, S		: user;
+Na, Nb, Ns 	: number;
+Pa, Pb		: number;
+F1,F2,F3,G	: function;
+
+messages
+1. A -> B 	: A, B, Na
+2. B -> S 	: A, B, Na, Nb
+3. S -> B 	: Ns ,
+ F1(Ns, Nb, A, Pb) # F1(Ns,Na,B,Pa),
+ F2(Ns, Nb, A, Pb) # F2(Ns,Na,B,Pa),
+ F3(Ns, Nb, A, Pb) # F3(Ns,Na,B,Pa),
+ G(F1(Ns,Na,B,Pa),F2(Ns,Na,B,Pa), F3(Ns,Na,B,Pa), Pb )
+4. B -> A 	: Ns, F3(Ns,Na,B,Pa)
+5. A -> B 	: F2(Ns,Na,B,Pa)
+
+knowledge
+A	: A,B,S,F1,F2,F3,G;
+B	: A,B,S,F1,F2,F3,G;
+S	: A,B,S,F1,F2,F3,G;
+
+session_instances
+ [A:alice,B:bob,S:server,F1:f1,F2:f2,F3:f3,G:g];
+
+goal
+ A authenticates B on Na;

@@ -1,0 +1,22 @@
+protocol Test;
+identifiers
+A,B : user;
+Na : number;
+
+messages
+1. A => B 	: Na
+2. B => A	: Na
+
+knowledge
+A	: A,B;
+B	: A,B;
+
+session_instances
+ [A:alice,B:bob];
+
+intruder_knowledge
+ alice,bob;
+
+goal
+ secrecy_of Na [A,B];
+

@@ -1,0 +1,23 @@
+protocol BANModifiedVersionOfCCITTX5093;
+
+identifiers
+A, B 		: user;
+Na, Nb 		: number;
+Ya, Yb 		: number;
+Xa, Xb 		: number;
+PKa, PKb 	: public_key;
+
+messages
+1. A -> B 	: A, {Na, B, Xa, {Ya}PKb}PKa'
+2. B -> A 	: B, {Nb, A, Na, Xb, {Yb}PKa}PKb'
+3. A -> B 	: A, {B, Nb}PKa'
+
+knowledge
+A	: A,B,PKa,PKb,Xa;
+B	: A,B,PKa,PKb;
+
+session_instances
+ [A:alice,B:bob,Xa:data,PKa:pk1,PKb:pk2];
+
+goal
+ A authenticates B on Na;

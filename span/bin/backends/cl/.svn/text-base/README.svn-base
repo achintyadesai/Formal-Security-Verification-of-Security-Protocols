@@ -1,0 +1,184 @@
+
+-----------------------------------------------------------
+                        CL-Atse
+Constraint Logic-based Model-checking of Security Protocols
+-----------------------------------------------------------
+
+AUTHOR
+------
+Main Author .: Mathieu Turuani
+Contributors : Judson Santiago
+               Max Tuengerthal
+email .......: turuani@loria.fr
+URL .........: www.loria.fr/equipes/cassis/softwares/AtSe/
+               www.loria.fr/~turuani
+Address .....: Loria-INRIA, Cassis Team,
+	       Campus Scientifique, BP 239,
+	       54506 Vandoeuvre-lès-Nancy
+	       France
+Project .....: AVISPA - Automated Validation of
+               Internet Security Protocols and Applications
+Project URL .: www.avispa-project.org
+
+
+===========================================================
+
+
+Overview:
+---------
+
+CL-Atse is an OCaml-based implementation of the deduction 
+rules developed in the CASRUL tool-suite and the AVISPA 
+European project. These rules allows anyone to interpret 
+and automatically "execute" a protocol in every possible 
+ways against an generic intruder with the Dolev-Yao 
+deductional capabilities. A protocol, written in the 
+Avispa's intermediate format is executed over a finite 
+(user decided) number of iterations, or entirely if no loop 
+is involved. There are no other restrictions: either an 
+attack is found, or the protocol is claimed to be secured 
+over the given number of sessions. The search for attacks 
+can be parametrised. In particular, the protocol's objects 
+can be typed or untyped, and the pair can be free or 
+(partially) associative. The Xor operator and it's ACUN 
+properties is under developpement. Finally, CL-Atse performs 
+two kind of optimizations : First, the protocol specification
+itself is simplified to accelerate the search for attacks 
+(steps merged or removed, useless messages ignored, etc..). 
+Second, various optimizations in the deduction rules try to 
+reduce, and often eliminate, redundancies and uselessness in 
+the protocol execution.
+
+CL-Atse is developed in the context of the EU Project AVISPA (Automated
+Validation of Internet Security Protocols and Applications,
+www.avispa-project.org IST-2001-39252). Earlier development on OFMC
+took place in the context of the predecessor project AVISS (Automated
+Verification of Infinite-State Systems IST-2000-26410).
+
+All analysis tools of the AVISPA project are based on two
+specification languages: HLPSL (the High-Level Protocol Specification
+Language) and IF (the Intermediate Format). The HLPSL allows for an
+easy description of protocols by the user, while the IF is a low-level
+language suited for automatic input to analysis tools.  The HLPSL2IF
+translator, also shipped as part of the AVISPA Tool, is developed at
+INRIA Nancy.
+
+
+Install:
+--------
+
+You do not need anything to run cl-atse alone. However, to run it
+with the other avispa's tools, make sure that :
+
+- the $AVISPA_PACKAGE variable contain the path to the avispa-package
+  directory. For example, if it is in /home/mathieu/avispa-pack
+  then with Debian uses $export AVISPA_PACKAGE=/home/mathieu/avispa-pack
+
+- the cl-atse binary file must be present in the avispa-package
+  hierarchy, at the following positions :
+  $AVISPA_PACKAGE/bin/backends/cl/cl-atse  for the binary file
+  $AVISPA_PACKAGE/bin/backends/cl.bash     for the script file
+
+
+Usage:
+------
+
+In general, CL-Atse is called directly by the AVISPA Tool.  You can
+specify CL-Atse as the desired back-end using the --cl switch as
+follows:
+   avispa <filename> [OPTIONS] --cl-atse [CL-ATSE OPTIONS]
+
+Should you wish to call CL-Atse directly, you can do so as follows:
+( cl-atse is usually in $AVISPA_PACKAGE/bin/backends/cl/cl-atse )
+
+   cl-atse <inputfiles> [CL-ATSE OPTIONS]
+
+<inputfiles> can be any set of if or hlpsl files. However, if any
+            hlpsl file is provided, then the hlpsl2if translator
+            must be accessible by cl-atse. This is either
+            present in ./; path known by $HLPSL2IF; or accessible
+            with the $AVISPA_PACKAGE variable (default). Be also
+            aware that when given a set of input files, CL-Atse
+            will output it's analysis of each sequentially. 
+            To give a set of files as input is particularly useful
+            when using the -bench option.
+
+CL-ATSE OPTION can be any set of cl-atse options including :
+
+  -nb n   : Maximum number of role iterations (or loops, default is 3)
+            This option bound the maximum number of times
+            cl-atse is allowed to re-execute any loop
+            in the protocol specification. Since a role iteration
+            (same role re-executed in sequence) is a loop, this
+            also bound the maximum number of times each role
+            instance is executed sequentially. However, this
+            do not bound the parallel role executions, which
+            are already bounded in the if file.
+
+  -light  : Force the use of non-associative unification algorithm.
+            By default, this option is only activated if non restrictive.
+
+  -notype : Do not take the typing constraints into account.
+            That is, a variable of type pair can be instantiated with
+	    a cipher bloc or a nonce with this option.
+
+  -td     : Perform depth-first search (default, less memory)
+            This control the search for attacks in cl-atse.
+            This is the fastest search and the less memory dependant,
+            but it can provide non-minimal attacks.
+
+  -lr     : Perform breath-first search (minimal attack)
+            With this option, cl-atse always output one of the
+            shortest attacks (if any). However, memory use can
+            be much higher.
+
+  -out    : Write the attack to file.atk (if any). Simple stdout forward.
+
+  -dir d  : Output directory to use with -out. Also, any temporary
+            if file generated by hlpsl2if is placed in this directory.
+            (CL-Atse call hlpsl2if when provided a hlpsl file)
+
+  -ns     : Do not simplify the IF file (complete trace)
+            With the option, Cl-Atse is forbidden to simplify the given 
+            protocol specification (if file). The protocol simplification
+            is an important step which allow CL-Atse to search for attacks
+            much more rapidly. However, you might want to use this 
+            option with the -noexec option to see the protocol specification
+            as interpreted from CL-Atse directly from the .if file.
+            Since CL-Atse's output is much nicer to read that the if file,
+            this allows you to check that the translation of your protocol
+            fit your expectations.
+
+  -noopt  : Do not try to replace hashing by tokens. (slower dep. on protocol)
+            By default, CL-Atse tries to re-organize the protocol to make
+            it easier to check. This option disable this functionality.
+
+  -v      : Print more output informations. In particular, in this mode
+            CL-Atse write the protocol specification as read form the
+            .if file, and write a bit more attack informations.
+
+  -noexec : Do not search for attacks. This disable the search for attacks.
+            Consequently, all protocols are seen as "safe" with this option.
+            Useful with -ns to look at the protocol specification.
+
+  -bench  : Benchmark output format (very concise).
+            This option activate a benchmark mode for CL-Atse. In this mode,
+            the output is extremely concise (one line per input if or
+            hlpsl file), and stdin an be linked to the stdout of an
+            other instance of cl-atse. For example, you can get a nice
+            comparison table between typed an untyped models with :
+            ~/hlpsl$ cl-atse -bench *.hlpsl | ./cl-atse -bench -notype
+
+
+  -split  : Use the --split option on hlpsl2if for hlpsl files/
+            This option makes cl-atse run once per splited if file.
+
+  -help   : Display the complete list of options
+  --help  : Display the complete list of options
+
+
+
+------------------------------------------
+Send questions and bug reports to:
+Mathieu Turuani <turuani@loria.fr>
+------------------------------------------

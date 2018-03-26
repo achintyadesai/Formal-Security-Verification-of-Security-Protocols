@@ -1,0 +1,28 @@
+protocol SpliceAS;
+
+identifiers
+S, C, AS 	: user;
+N1, N2, N3 	: number;
+T 		: number;
+L 		: number;
+Tab	 	: table;
+Inc		: function;
+
+messages
+1. C -> AS 	: C, S, N1
+2. AS -> C 	: AS, {AS, C, N1, Tab[S]}Tab[AS]'
+3. C -> S 	: C, S, {C, T, L, {N2}Tab[S]}Tab[C]'
+4. S -> AS 	: S, C, N3
+5. AS -> S 	: AS, {AS, S, N3, Tab[C]}Tab[AS]'
+6. S -> C 	: S, C, {S, Inc(N2)}Tab[C]
+
+knowledge
+S 	: S,C,AS,Tab,Inc;
+C 	: S,C,AS,Tab,Inc;
+AS 	: S,C,AS,Tab,Inc;
+
+session_instances
+ [S:s,C:c,AS:as,Tab:tab,Inc:inc];
+
+goal
+ S authenticates C on N2;

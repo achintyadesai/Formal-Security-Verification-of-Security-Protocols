@@ -1,0 +1,25 @@
+protocol LoweModifiedWideMouthedFrog;
+
+identifiers
+A, B, S 	: user;
+Kas, Kbs, Kab 	: symmetric_key;
+Nb 		: number;
+Ta, Ts 		: number;
+Succ 		: function;
+
+messages
+1. A -> S 	: A, {Ta, B, Kab}Kas
+2. S -> B 	: {Ts, A, Kab}Kbs
+3. B -> A 	: {Nb}Kab
+4. A -> B 	: {Succ(Nb)}Kab
+
+knowledge
+A	: A,B,S,Kas,Succ;
+B	: A,B,S,Kbs,Succ;
+S	: A,B,S,Kas,Kbs,Succ;
+
+session_instances
+ [A:alice,B:bob,S:server,Kas:key1,Kbs:key2,Succ:succ];
+
+goal
+ secrecy_of Kab [];

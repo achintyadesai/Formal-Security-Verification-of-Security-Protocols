@@ -1,0 +1,22 @@
+protocol TV;
+identifiers
+C,D	: user;
+Ins	: number;
+K	: table;
+
+messages
+1. D -> C	: C,K[C]
+2. C -> D	: C,D,{Ins}K
+
+knowledge
+D	: K;
+C	: K,D;
+
+session_instances
+ [D:i,C:scard,K:key];
+
+intruder_knowledge
+ scard,key,i;
+
+goal
+ C authenticates D on Ins;

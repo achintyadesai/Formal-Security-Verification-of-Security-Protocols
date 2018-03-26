@@ -1,0 +1,25 @@
+protocol WooAndLamMutualAuthentication;
+identifiers
+P, Q, S 	: user;
+Kps, Kqs, Kpq 	: symmetric_key;
+N1, N2 		: number;
+
+messages
+1. P -> Q 	: P, N1
+2. Q -> P 	: Q, N2
+3. P -> Q 	: {P, Q, N1, N2}Kps
+4. Q -> S 	: {P, Q, N1, N2}Kps, {P, Q, N1, N2}Kqs
+5. S -> Q 	: {Q, N1, N2, Kpq}Kps, {P, N1, N2,Kpq}Kqs
+6. Q -> P 	: {Q, N1, N2, Kpq}Kps, {N1, N2}Kpq
+7. P -> Q 	: {N2}Kpq
+
+knowledge
+P	: P,Q,S,Kps;
+Q	: P,Q,S,Kqs;
+S	: P,Q,S,Kps,Kqs;
+
+session_instances
+ [P:alice,Q:bob,S:server,Kps:key1,Kqs:key2];
+
+goal
+ secrecy_of Kpq [];

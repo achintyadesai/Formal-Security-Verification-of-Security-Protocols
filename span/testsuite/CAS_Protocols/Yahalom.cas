@@ -1,0 +1,22 @@
+protocol aYahalom;
+identifiers
+A, B, S 	: user;
+Na, Nb 		: number;
+Kas, Kbs, Kab 	: symmetric_key;
+
+messages
+1. A -> B 	: A, Na
+2. B -> S 	: B, {A, Na, Nb}Kbs
+3. S -> A 	: {B, Kab, Na, Nb}Kas, {A, Kab}Kbs
+4. A -> B 	: {A, Kab}Kbs, {Nb}Kab
+
+knowledge
+A : A, B, S, Kas;
+B : B, S, Kbs;
+S : S, A, B, Kas, Kbs;
+
+session_instances
+ [A:alice,B:bob,S:server,Kas:key1,Kbs:key2];
+
+goal
+ secrecy_of Kab [];

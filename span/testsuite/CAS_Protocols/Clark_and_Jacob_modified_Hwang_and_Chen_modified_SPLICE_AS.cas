@@ -1,0 +1,28 @@
+protocol ClarkAndJacobModifiedHwangAndChenModifiedSPLICEAS;
+
+identifiers
+S, C, AS 	: user;
+N1, N2, N3 	: number;
+T 		: number;
+L 		: number;
+Pks, Pkas, Pkc 	: public_key;
+Inc		: function;
+
+messages
+1. C -> AS 	: C, S, N1
+2. AS -> C 	: AS, {AS, C, N1, S, Pks}Pkas'
+3. C -> S 	: C, S, {T, L, {C, N2}Pks}Pkc'
+4. S -> AS 	: S, C, N3
+5. AS -> S 	: AS, {AS, S, N3, C, Pkc}Pkas'
+6. S -> C 	: S, C, {Inc(N2)}Pkc
+
+knowledge
+S 	: S,C,AS,Pks,Pkas,Pkc,Inc;
+C 	: S,C,AS,Pks,Pkas,Pkc,Inc;
+AS 	: S,C,AS,Pks,Pkas,Pkc,Inc;
+
+session_instances
+ [S:s,C:c,AS:as,Pks:pk1,Pkas:pk2,Pkc:pk3,Inc:inc];
+
+goal
+ S authenticates C on N2;

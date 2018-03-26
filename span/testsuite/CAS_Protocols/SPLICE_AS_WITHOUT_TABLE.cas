@@ -1,0 +1,28 @@
+protocol SpliceASWithoutTable;
+
+identifiers
+S, C, AS 	: user;
+N1, N2, N3 	: number;
+T 		: number;
+L 		: number;
+Kas,Kc,Ks 	: public_key;
+Inc		: function;
+
+messages
+1. C -> AS 	: C, S, N1
+2. AS -> C 	: AS, {AS, C, N1, Ks}Kas'
+3. C -> S 	: C, S, {C, T, L, {N2}Ks}Kc'
+4. S -> AS 	: S, C, N3
+5. AS -> S 	: AS, {AS, S, N3, Kc}Kas'
+6. S -> C 	: S, C, {S, Inc(N2)}Kc
+
+knowledge
+S 	: S,C,AS,Inc,Kas,Ks,Kc;
+C 	: S,C,AS,Inc,Kas,Ks,Kc;
+AS 	: S,C,AS,Inc,Kas,Ks,Kc;
+
+session_instances
+ [S:s,C:c,AS:as,Kas:k1,Ks:k2,Kc:k3,Inc:inc];
+
+goal
+ S authenticates C on N2;

@@ -1,0 +1,22 @@
+protocol AndrewSecureRPC;
+identifiers
+A, B 		: user;
+Kab, Kab2 	: symmetric_key;
+Na, Nb, Nb2 	: number;
+Succ		: function;
+
+messages
+1.  A => B	: A, {Na}Kab
+2.  B => A 	: {Succ(Na), Nb}Kab
+3.  A => B 	: {Succ(Nb)}Kab
+4.  B => A 	: {Kab2, Nb2}Kab
+
+knowledge
+A	: A,B,Succ;
+B	: A,B,Succ;
+
+session_instances
+ [A:alice,B:bob,Succ:f,Kab:key];
+
+goal
+ secrecy_of Kab2 [];

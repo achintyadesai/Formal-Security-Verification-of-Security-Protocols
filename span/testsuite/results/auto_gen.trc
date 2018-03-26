@@ -1,0 +1,5 @@
+
+(initiator, 6) -> (Intruder_, 0) : x(pair(exp(dummy_nonce,nonce-1),pair(dummy_nonce,dummy_nonce)),_gen_trc)
+add_in_set((Intruder_, 0),pair(exp(dummy_nonce,var-XA-1),dummy_nonce),(Intruder_, 0),Set_knowledge)
+(Intruder_, 0) -> (responder, 4) : x(pair(exp(dummy_nonce,var-XA-1),dummy_nonce),_gen_trc)
+(responder, 4) -> (Intruder_, 0) : x(pair(exp(dummy_nonce,nonce-2),dummy_nonce),_gen_trc)
